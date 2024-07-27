@@ -6,6 +6,8 @@ In this repos, we have implemented examples of AI Agents interfaced with various
 
 Ví dụ: [place holder]
 
+**Ở mục `data`, chúng ta có sẵn một file pdf đã được tạo ra vởi Gen AI từ lesson 4 để phục vụ cho mục đích chạy thử. Các bạn có thể tuỳ biến thay đổi**
+
 ## Các thành phần Agents
 
 
