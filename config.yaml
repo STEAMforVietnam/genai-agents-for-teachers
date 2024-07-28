@@ -1,0 +1,10 @@
+# HƯỚNG DẪN:
+#
+genai: openai
+model: gpt-4o
+
+# TODO: giải thích temperature và crew_verbose là gì
+# Thầy cô có thể lựa chọn giữ nguyên không cần thay đổi các
+# giá trị này
+temperature: 0.5
+crew_verbose: 2
