@@ -154,10 +154,39 @@ class MatrixCrew(CustomCrew):
         """
         self._get_tools()
 
+        ### Add Orchestrator (Người Giám Sát)
+        orchestrator = Agent(
+            role="Một người giám sát, hướng dẫn cho matrix_creator các bước tiếp theo",
+            goal=("Bạn sẽ giao việc tạo $Ma_Trận_Đề_Bài cho matrix_creator."
+            "Tiếp theo, hãy giao $Ma_Trận_Đề_Bài này cho matrix_checker và yêu cầu đánh giá. Cuối cùng, bạn sẽ nhận lại một đánh giá về từ matrix_checker."
+            "Sau đó, dựa trên kết quả nhận tại từ matrix_checker, bạn sẽ chọn một trong hai quyết định:"
+            "1. Yêu cầu matrix_creator sửa lại $Ma_Trận_Đề_Bài theo gợi ý từ matrix_checker"
+            "2. Nhận định công việc đã hoàn thành trả lại kết quả $Ma_Trận_Đề_Bài"),
+            backstory="",
+            allow_delegation=False,
+            llm=self.llm,
+            verbose=True,
+            max_iter=2
+        )
+
+        # html_maker = Agent()
+        orchestrator_task = Task(
+            description=(
+                "Đầu tiên, Bạn sẽ giao việc tạo $Ma_Trận_Đề_Bài cho matrix_creator và nhận lại kết quả từ matrix_creator."
+                "Tiếp theo, hãy giao $Ma_Trận_Đề_Bài này cho matrix_checker và yêu cầu đánh giá. Cuối cùng, bạn sẽ nhận lại một đánh giá về từ matrix_checker."
+                "Sau đó, dựa trên kết quả nhận tại từ matrix_checker, bạn sẽ chọn một trong hai quyết định:"
+                "1. Yêu cầu matrix_creator sửa lại $Ma_Trận_Đề_Bài theo gợi ý từ matrix_checker"
+                "2. Nhận định công việc đã hoàn thành trả lại kết quả $Ma_Trận_Đề_Bài"
+            ),
+            expected_output="Ma_Trận_Đề_Bài trả về từ matrix_creator",
+            agent=orchestrator,
+            # output_file
+        )
+
         ### Add Matrix Creator Agent (Ngừoi Kiến Tạo), responsible for all "Tạo" task
         # TODO: change Agent args roal, goal, backstory to take in prompt.txt
         matrix_creator = Agent(
-            role="Giáo viên tạo Ma Trận Bài Kiểm Tra và Bài Tập Vật Lý",
+            role="matrix_creator",
             goal=("Bạn sẽ giúp tôi tạo Ma_Trận_Đề_Bài phục vụ cho việc kiểm tra, đánh giá và nhận xét học sinh trong môn Vật Lý Lớp 9"
             ), # TODO: COPY HƯỚNG DẪN
             backstory="Bạn là một giáo viên dạy Vật Lý ở một trường trung học phổ thông tại nội thành Hà Nội",
@@ -165,7 +194,7 @@ class MatrixCrew(CustomCrew):
             llm=self.llm,
             verbose=True,
             tools=self.tools,
-            max_iter=2
+            max_iter=1
         )
         
         # TODO: change Task args description and expected_output to take in prompt.txt
@@ -192,18 +221,19 @@ class MatrixCrew(CustomCrew):
             ),
             expected_output="Một Ma_Trận_Đề_Bài theo cấu trúc JSON nêu trên.",
             agent=matrix_creator,
+            context=[orchestrator_task]
         )
 
         ### Add Matrix Checker Agent (Nguời Kiểm Định), responsible for all "Kiểm Tra Task"
         matrix_checker = Agent(
-            role="Giáo viên Kiểm Tra Ma Trận Bài Kiểm Tra",
+            role="matrix_checker",
             goal="Bạn sẽ giúp tôi kiểm tra và đánh giá Ma_Trận_Đề_Bài cho môn Vật Lý Lớp 9",
             backstory="Bạn là một giáo viên dạy Vật Lý ở một trường trung học phổ thông tại nội thành Hà Nội",
             allow_delegation=False,
             llm=self.llm,
             verbose=True,
             tools=self.tools,
-            max_iter=2
+            max_iter=1
         )
 
         matrix_checker_task = Task(
@@ -219,47 +249,16 @@ class MatrixCrew(CustomCrew):
                 "7. Mỗi trường thông tin 'Chương hoặc Chủ đề' cần được điền với tên chương hoặc bài học từ file mục_lục.pdf"
             ),
             expected_output=("Một đánh giá ngắn gọn và hướng dẫn chỉnh sửa cần thiết để Ma_Trận_Đề_Bài đúng với tiêu chí đề ra. No Yapping"),
-            agent=matrix_checker,
-            context=[matrix_creator_task],
-        )
-
-        ### Add Orchestrator (Người Giám Sát)
-        orchestrator = Agent(
-            role="Một người giám sát, hướng dẫn cho matrix_creator và matrix_checker các bước tiếp theo",
-            goal=("Bạn sẽ giao việc tạo $Ma_Trận_Đề_Bài cho matrix_creator, và sẽ nhận lại một đánh giá về $Ma_Trận_Đề_Bài từ matrix_checker."
-            "Sau đó, dựa trên kết quả nhận tại từ matrix_checker, bạn sẽ chọn một trong hai quyết định:"
-            "1. Yêu cầu matrix_creator sửa lại $Ma_Trận_Đề_Bài theo gợi ý từ matrix_checker"
-            "2. Nhận định công việc đã hoàn thành và tiến hành bước tiếp theo, là tạo file HTML bằng tool MatrixHTMLMakerTool"),
-            backstory="",
-            allow_delegation=True,
-            llm=self.llm,
-            verbose=True,
-            tools=self.tools,
-            max_iter=2
-        )
-
-        orchestrator_task = Task(
-            description=(
-                "1. Xác định các khái niệm và kỹ năng cần kiểm tra cho từng chủ đề {sub_topics}\n"
-                "2. Tạo các câu hỏi trắc nghiệm và tự luận để đánh giá sự hiểu biết của học sinh về từng chủ đề trong {sub_topics}.\n"
-                "3. Phát triển các bài tập để học sinh thực hành và củng cố kiến thức.\n"
-                "4. Bao gồm các câu hỏi và bài tập ở nhiều mức độ khó khác nhau để phù hợp với trình độ của học sinh, đi từ dễ đến khó, bao gồm các bài kiểm tra 15 phút và một tiết (45 phút).\n"
-                "5. Đảm bảo các câu hỏi và bài tập phù hợp với tiêu chuẩn chương trình học.\n"
-                "6. Cung cấp hướng dẫn chấm điểm và đáp án cho các câu hỏi và bài tập."
-                "7. Tất cả các output bằng tiếng Việt."
-            ),
-            expected_output="",
             agent=orchestrator,
-            context=[matrix_creator_task, matrix_checker_task],
-            # output_file
+            context=[matrix_creator_task],
         )
 
         ### Finally, compose Crew
         return Crew(
                 agents=[matrix_creator, matrix_checker],
-                tasks=[matrix_creator_task, matrix_checker_task],
+                tasks=[matrix_creator_task],
                 manager_agent=orchestrator,
                 memory=True,
                 process=Process.hierarchical,
-                verbose=2
+                verbose=1
             )
