@@ -18,3 +18,9 @@ unstructured_inference
 sentence-transformers
 #Others
 python-dotenv
+
+#CrewAI
+grpcio==1.63.0
+crewai
+crewai[tools]
+sentence-transformers
