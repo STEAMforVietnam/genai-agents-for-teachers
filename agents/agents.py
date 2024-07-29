@@ -174,17 +174,7 @@ class MatrixCrew(CustomCrew):
                 "Bạn tạo Ma_Trận_Đề_Bài Kiểm tra phù hợp với các Chương và Bài học trong Sách Giáo khoa Vật Lý Lớp 10 của Nhà xuất bản Giáo dục Việt Nam thoả mãn các bước sau:"
                 "1. Hãy dùng tool LessonRetrieverTool để tìm các tên các chương và bài học trích từ trích từ file mục_lục.pdf"
                 "2. Lập các Ma_Trận_Đề_Bài Kiểm tra theo một cấu trúc dữ liệu JSON giống với cấu trúc sau:\n"
-                """[
-                    {
-                        "Chương hoặc Chủ đề": "...",
-                        "Nội dung hoặc Đơn vị Kiến thức": "...",
-                        "Mức độ Nhận thức": "...",
-                        "Loại câu hỏi": "...",
-                        "Số câu hỏi": "...",
-                        "Tổng số điểm": "..."
-                    }
-                    ]
-                """
+                "[{{'Chương hoặc Chủ đề': '...', 'Nội dung hoặc Đơn vị Kiến thức': '...', 'Mức độ Nhận thức': '...', 'Loại câu hỏi': '...', 'Số câu hỏi': '...', 'Tổng số điểm': '...'}}]\n"
                 "3. Tất cả các output bằng tiếng Việt.\n"
                 "4. Nội dung trường thông tin 'Chương hoặc Chủ đề' cần tương ứng với tên các Chương của Sách Giáo khoa mà tôi nói ở trên đây\n"
                 "5. Nội dung trường thông tin 'Mức độ Nhận thức' là một trong 4 giá trị: 'Nhận biết', 'Thông hiểu', 'Vận dụng' hoặc 'Vận dụng cao' - thể hiện mức hiểu kiến thức từ thấp tới cao."
@@ -220,16 +210,7 @@ class MatrixCrew(CustomCrew):
             description=(
                 "Kiểm tra và đánh giá lại cho tôi Ma_Trận_Đề_Bài đã được tạo ở matrix_creator_task theo các tiêu chí sau:\n"
                 "1. Một một item trong Ma_Trận_Đề_Bài có cấu trúc chính xác như sau:\n"
-                """
-                    {
-                        "Chương hoặc Chủ đề": "...",
-                        "Nội dung hoặc Đơn vị Kiến thức": "...",
-                        "Mức độ Nhận thức": "...",
-                        "Loại câu hỏi": "...",
-                        "Số câu hỏi": "...",
-                        "Tổng số điểm": "..."
-                    }
-                """
+                "[{{'Chương hoặc Chủ đề': '...', 'Nội dung hoặc Đơn vị Kiến thức': '...', 'Mức độ Nhận thức': '...', 'Loại câu hỏi': '...', 'Số câu hỏi': '...', 'Tổng số điểm': '...'}}]\n"
                 "2. Cả 4 giá trị nhận thức 'Nhận biết', 'Thông hiểu', 'Vận dụng' hoặc 'Vận dụng cao' đều xuất hiện trong Ma_Trận_Đề_Bài\n"
                 "3. 'Tổng số điểm' của các items có 'Mức độ Nhận thức' là 'Nhận biết', sau khi cộng lại phải là 40\n"
                 "4. 'Tổng số điểm' của các items có 'Mức độ Nhận thức' là 'Thông hiểu' sau khi cộng lại phải là 30\n"
