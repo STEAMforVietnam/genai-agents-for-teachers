@@ -10,7 +10,7 @@ from langchain.tools import Tool
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_milvus.vectorstores import Milvus
 from langchain.tools.retriever import create_retriever_tool
-from custom_tools import create_exam_html_maker_tool, create_matrix_html_maker_tool
+from .custom_tools import create_exam_html_maker_tool, create_matrix_html_maker_tool
 
 
 
@@ -274,7 +274,7 @@ class MatrixCrew(CustomCrew):
         )
 
         ### Finally, compose Crew
-        self.crew = Crew(
+        return Crew(
                 agents=[matrix_creator, matrix_checker],
                 tasks=[matrix_creator_task, matrix_checker_task],
                 manager_agent=orchestrator,
