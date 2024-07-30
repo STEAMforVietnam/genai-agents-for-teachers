@@ -146,7 +146,8 @@ def percentage_calculation(matrix_data):
 
     return total
 
-def generating_exam_matrix(matrix_json_obj):
+def generating_exam_matrix(matrix_json_obj, topic: str):
+    title = f"MÔN {topic} - THỜI GIAN LÀM BÀI 90 PHÚT"
     html_content = """
     <!DOCTYPE html>
     <html>
@@ -205,7 +206,7 @@ def generating_exam_matrix(matrix_json_obj):
         <h1>
         MA TRẬN KIỂM TRA GIỮA HỌC KỲ I - NĂM HỌC 2023 - 2024
         <br>
-        MÔN TOÁN 9 - THỜI GIAN LÀM BÀI 90 PHÚT
+        """ + title + """
         </h1>
 
         <!-- NOTE: The table has 14 columns -->
@@ -619,7 +620,7 @@ def create_exam_html_maker_tool(json_output):
     #         exam.write(question_html)
 
 @tool("MatrixHTMLMakerTool")
-def create_matrix_html_maker_tool(input: List[Dict]) -> str:
+def create_matrix_html_maker_tool(input: List[Dict], topic: str) -> str:
     """
     This tool creates an html file from the JSON action input data
     Args:
@@ -641,7 +642,7 @@ def create_matrix_html_maker_tool(input: List[Dict]) -> str:
         ]
     """
 
-    html_content = generating_exam_matrix(input)
+    html_content = generating_exam_matrix(input, topic)
     with open("./matrix.html", "w") as matrix:
         matrix.write(html_content)
     return "./matrix.html"

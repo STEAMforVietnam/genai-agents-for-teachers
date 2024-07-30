@@ -1,6 +1,13 @@
 from dotenv import load_dotenv
 load_dotenv()
-from agents.agents import MatrixCrew
+from agents.matrix import MatrixCrew
+
+topic= "Vật Lý Lớp 10"
+sub_topics = "động học, chuyển động tròn"
 
 matrix_crew = MatrixCrew()
-result = matrix_crew.run()
+inputs = {
+    "topic": topic,
+    "sub_topics": sub_topics
+}
+matrix_crew.run(inputs)
