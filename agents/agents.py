@@ -21,6 +21,7 @@ class KnowledgeLevelEnum(Enum):
     van_dung = "Vận dụng"
     van_dung_cao = "Vận dụng cao"
 
+    
 class MatrixJSON(BaseModel):
     topic: str
     sub_topic: str
@@ -28,6 +29,11 @@ class MatrixJSON(BaseModel):
     question_type: str
     number_of_questions: int
     total_points: int
+        
+
+class ExamJSON(BaseModel):
+    #TODO
+    pass
 
 
 class CustomCrew:
@@ -74,7 +80,7 @@ class CustomCrew:
 
         ### ADD HTMLMakerTool
         # self.tools.append(create_exam_html_maker_tool)
-        self.tools.append(create_matrix_html_maker_tool)
+        # self.tools.append(create_matrix_html_maker_tool)
 
         ### ADD PDFSearchTool
 
@@ -99,6 +105,7 @@ class CustomCrew:
                     "students": "30 em học sinh giỏi, 15 em học sinh khá, và 5 em học sinh trung bình"})
         return result
     
+    
 class ExamCrew(CustomCrew):
     """
     This is a CustomCrew specific for creating an Exam file from
@@ -118,17 +125,13 @@ class ExamCrew(CustomCrew):
 
         ### Add Test Creator Agent, responsible for all "Tạo" task
         # TODO: change Agent args roal, goal, backstory to take in prompt.txt
+        test_creator_role = self.creator_prompt.role
+        test_creator_goal = self.creator_prompt.goal
+        test_creator_backstory = self.creator_prompt.backstory
         test_creator = Agent(
-            role="Giáo viên tạo Bài Kiểm Tra và Bài Tập Vật Lý",
-            goal="Tạo các bài kiểm tra và bài tập chính xác và phù hợp cho từng chủ đề của môn Vật Lý 9."
-            "Sau đó, hãy sử dụng các thông tin đã được như Input để bạn tạo file HTML. Dùng tool ExamHTMLMakerTool để hoàn thành",
-            backstory="Bạn chịu trách nhiệm tạo các bài kiểm tra và bài tập cho môn Vật Lý 9. "
-                    "Bạn dựa vào công việc của Giáo viên Lập Kế Hoạch Nội Dung và Giáo viên Thiết Kế Bài Học, "
-                    "những người cung cấp dàn ý và ngữ cảnh liên quan đến chủ đề. "
-                    "Bạn tạo các bài kiểm tra và bài tập nhằm đánh giá sự hiểu biết của học sinh "
-                    "và củng cố kiến thức đã học. "
-                    "Bạn đảm bảo các bài kiểm tra và bài tập phù hợp với tiêu chuẩn chương trình học "
-                    "và trình độ của học sinh.",
+            role=test_creator_role,
+            goal=test_creator_goal,
+            backstory=test_creator_backstory,
             allow_delegation=False,
             llm=self.llm,
             verbose=True,
@@ -136,30 +139,80 @@ class ExamCrew(CustomCrew):
         )
         
         # TODO: change Task args description and expected_output to take in prompt.txt
-        test_assignment_task = Task(
-            description=(
-                "1. Xác định các khái niệm và kỹ năng cần kiểm tra cho từng chủ đề {sub_topics}\n"
-                "2. Tạo 2 câu hỏi trắc nghiệm để đánh giá sự hiểu biết của học sinh về từng chủ đề trong {sub_topics}.\n"
-                "3. Phát triển các bài tập để học sinh thực hành và củng cố kiến thức.\n"
-                "4. Bao gồm các câu hỏi và bài tập ở nhiều mức độ khó khác nhau để phù hợp với trình độ của học sinh, đi từ dễ đến khó, bao gồm các bài kiểm tra 15 phút và một tiết (45 phút).\n"
-                "5. Đảm bảo các câu hỏi và bài tập phù hợp với tiêu chuẩn chương trình học.\n"
-                "6. Tất cả các output bằng tiếng Việt."
-            ),
-            expected_output="Một bộ đề kiểm tra và bài tập chi tiết cho chủ đề {topic} và theo từng {sub_topics}"
-                "bao gồm câu hỏi trắc nghiệm, câu hỏi tự luận, bài tập, hướng dẫn chấm điểm và đáp án. Trả lại output theo dạng Markdown",
+        test_creator_task_description = self.creator_prompt.task_description
+        test_creator_task_expected_output = self.creator_prompt.task_expected_output
+        test_creator_task = Task(
+            description=(test_creator_task_description),
+            expected_output=test_creator_task_expected_output,
             agent=test_creator,
         )
 
         ### Add Test Checker Agent, responsible for all "Kiểm Tra Task"
-
-
-        ### Finally, compose Crew
-        return Crew(
-            agents=[test_creator],
-            tasks=[test_assignment_task],
-            verbose=2
+        test_checker_role = self.checker_prompt.role
+        test_checker_goal = self.checker_prompt.goal
+        test_checker_backstory = self.checker_prompt.backstory
+        
+        test_checker = Agent(
+            role=test_checker_role,
+            goal=test_checker_goal,
+            backstory=test_checker_backstory,
+            allow_delegation=False,
+            llm=self.llm,
+            verbose=True,
+            # tools=self.tools,
+            max_iter=2
         )
 
+        test_checker_task_description = self.checker_prompt.task_description
+        test_checker_task_expected_output = self.checker_prompt.task_expected_output
+        test_checker_task = Task(
+            description=(test_checker_task_description),
+            expected_output=(test_checker_task_expected_output),
+            agent=test_checker,
+            # output_json=MatrixJSON,
+            # output_file="matrix.json",
+            context=[test_creator_task],
+        )
+
+        ### ADD HTML Creator Agent (Thiết kế WEB)
+        test_html_creator_role = self.html_creator_prompt.role
+        test_html_creator_goal = self.html_creator_prompt.goal
+        test_html_creator_backstory = self.html_creator_prompt.backstory
+        html_creator = Agent(
+            role=test_html_creator_role,
+            goal=test_html_creator_goal,
+            backstory=test_html_creator_backstory,
+            allow_delegation=False,
+            llm=self.llm, 
+            verbose=True, 
+            tools=[create_exam_html_maker_tool],
+            max_iter=1
+        )
+        
+        test_html_creator_task_description = self.html_creator_prompt.task_description
+        test_html_creator_task_expected_output = self.html_creator_prompt.task_expected_output
+        html_task = Task(
+            description=(test_html_creator_task_description),
+            # TODO: somehow the tool output is not passed back to Agent Output
+            # SO expected_output is never met and the agent + the task fall into infinite loop
+            expected_output=(test_html_creator_task_expected_output),
+            # output_file="matrix.html"
+            agent=html_creator,
+            context=[test_creator_task, test_checker_task],
+            
+        )
+        
+        ### Finally, compose Crew
+        return Crew(
+                agents=[test_creator, test_checker, test_creator],
+                tasks=[test_creator_task, test_checker_task, html_task],
+                # manager_agent=orchestrator,
+                memory=True,
+                # process=Process.hierarchical,
+                verbose=1
+            )
+
+    
 class MatrixCrew(CustomCrew):
     """
     This is a CustomCrew specific for creating an Matrix file from
