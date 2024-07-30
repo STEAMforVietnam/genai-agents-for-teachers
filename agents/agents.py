@@ -30,10 +30,10 @@ class CustomCrew:
         """
 
         ### ADD RETRIEVER TOOL
-        embedding_model = HuggingFaceEmbeddings(model_name='keepitreal/vietnamese-sbert')
+        embedding_model = HuggingFaceEmbeddings(model_name='bkai-foundation-models/vietnamese-bi-encoder')
         retriever = Milvus(
             embedding_function=embedding_model,
-            collection_name="s4v_python_oh",
+            collection_name="s4v_python_oh_bkai",
             connection_args={"uri": os.environ.get("DATABSE_PUBLIC_ENDPOINT"),
                             "token": os.environ.get("DATABASE_API_KEY"),
                             "secure": True
@@ -53,8 +53,8 @@ class CustomCrew:
 
 
         ### ADD HTMLMakerTool
-        self.tools.append(create_exam_html_maker_tool)
-        self.tools.append(create_matrix_html_maker_tool)
+        # self.tools.append(create_exam_html_maker_tool)
+        # self.tools.append(create_matrix_html_maker_tool)
 
         ### ADD ImageReaderTool
 
@@ -156,17 +156,13 @@ class MatrixCrew(CustomCrew):
 
         ### Add Orchestrator (Người Giám Sát)
         orchestrator = Agent(
-            role="Một người giám sát, hướng dẫn cho matrix_creator các bước tiếp theo",
-            goal=("Bạn sẽ giao việc tạo $Ma_Trận_Đề_Bài cho matrix_creator."
-            "Tiếp theo, hãy giao $Ma_Trận_Đề_Bài này cho matrix_checker và yêu cầu đánh giá. Cuối cùng, bạn sẽ nhận lại một đánh giá về từ matrix_checker."
-            "Sau đó, dựa trên kết quả nhận tại từ matrix_checker, bạn sẽ chọn một trong hai quyết định:"
-            "1. Yêu cầu matrix_creator sửa lại $Ma_Trận_Đề_Bài theo gợi ý từ matrix_checker"
-            "2. Nhận định công việc đã hoàn thành trả lại kết quả $Ma_Trận_Đề_Bài"),
+            role="Giám Sát",
+            goal=("Bạn sẽ giao việc tạo $Ma_Trận_Đề_Bài cho matrix_creator và việc kiểm tra chất lượng của $Ma_Trận_Đề_Bài cho matrix_checker"),
             backstory="",
             allow_delegation=False,
             llm=self.llm,
             verbose=True,
-            max_iter=2
+            max_iter=5
         )
 
         # html_maker = Agent()
@@ -187,20 +183,20 @@ class MatrixCrew(CustomCrew):
         # TODO: change Agent args roal, goal, backstory to take in prompt.txt
         matrix_creator = Agent(
             role="matrix_creator",
-            goal=("Bạn sẽ giúp tôi tạo Ma_Trận_Đề_Bài phục vụ cho việc kiểm tra, đánh giá và nhận xét học sinh trong môn Vật Lý Lớp 9"
+            goal=("Bạn sẽ giúp tôi tạo $Ma_Trận_Đề_Bài cho học sinh trong môn Vật Lý Lớp 10"
             ), # TODO: COPY HƯỚNG DẪN
             backstory="Bạn là một giáo viên dạy Vật Lý ở một trường trung học phổ thông tại nội thành Hà Nội",
             allow_delegation=False,
             llm=self.llm,
             verbose=True,
             tools=self.tools,
-            max_iter=1
+            max_iter=5
         )
         
         # TODO: change Task args description and expected_output to take in prompt.txt
         matrix_creator_task = Task(
             description=(
-                "Bạn tạo Ma_Trận_Đề_Bài Kiểm tra phù hợp với các Chương và Bài học trong Sách Giáo khoa Vật Lý Lớp 10 của Nhà xuất bản Giáo dục Việt Nam thoả mãn các bước sau:"
+                "Tạo Ma_Trận_Đề_Bài Kiểm tra phù hợp với các Chương và Bài học trong Sách Giáo khoa Vật Lý Lớp 10 của Nhà xuất bản Giáo dục Việt Nam thoả mãn các bước sau:"
                 "1. Hãy dùng tool LessonRetrieverTool để tìm các tên các chương và bài học trích từ trích từ file mục_lục.pdf"
                 "2. Lập các Ma_Trận_Đề_Bài Kiểm tra theo một cấu trúc dữ liệu JSON giống với cấu trúc sau:\n"
                 "[{{'Chương hoặc Chủ đề': '...', 'Nội dung hoặc Đơn vị Kiến thức': '...', 'Mức độ Nhận thức': '...', 'Loại câu hỏi': '...', 'Số câu hỏi': '...', 'Tổng số điểm': '...'}}]\n"
@@ -220,20 +216,20 @@ class MatrixCrew(CustomCrew):
                 "12. Các bài ở mức độ nhận thức 'Vận dụng cao' có tổng số điểm bằng 10, và mỗi bài ở mức này tương đương với 10 điểm\n"
             ),
             expected_output="Một Ma_Trận_Đề_Bài theo cấu trúc JSON nêu trên.",
-            agent=matrix_creator,
-            context=[orchestrator_task]
+            agent=[matrix_creator, matrix_checker],
+            # context=[orchestrator_task]
         )
 
         ### Add Matrix Checker Agent (Nguời Kiểm Định), responsible for all "Kiểm Tra Task"
         matrix_checker = Agent(
             role="matrix_checker",
-            goal="Bạn sẽ giúp tôi kiểm tra và đánh giá Ma_Trận_Đề_Bài cho môn Vật Lý Lớp 9",
+            goal="Bạn sẽ giúp tôi kiểm tra và đánh giá chất lượng $Ma_Trận_Đề_Bài cho môn Vật Lý Lớp 10",
             backstory="Bạn là một giáo viên dạy Vật Lý ở một trường trung học phổ thông tại nội thành Hà Nội",
             allow_delegation=False,
             llm=self.llm,
             verbose=True,
             tools=self.tools,
-            max_iter=1
+            max_iter=5
         )
 
         matrix_checker_task = Task(
@@ -246,10 +242,10 @@ class MatrixCrew(CustomCrew):
                 "4. 'Tổng số điểm' của các items có 'Mức độ Nhận thức' là 'Thông hiểu' sau khi cộng lại phải là 30\n"
                 "5. 'Tổng số điểm' của các items có 'Mức độ Nhận thức' là 'Vận dụng' sau khi cộng lại phải là 20\n"
                 "6. 'Tổng số điểm' của các items có 'Mức độ Nhận thức' là 'Vận dụng cao' sau khi cộng lại phải là 10\n"
-                "7. Mỗi trường thông tin 'Chương hoặc Chủ đề' cần được điền với tên chương hoặc bài học từ file mục_lục.pdf"
+                # "7. Mỗi trường thông tin 'Chương hoặc Chủ đề' cần được điền với tên chương hoặc bài học từ file mục_lục.pdf"
             ),
             expected_output=("Một đánh giá ngắn gọn và hướng dẫn chỉnh sửa cần thiết để Ma_Trận_Đề_Bài đúng với tiêu chí đề ra. No Yapping"),
-            agent=orchestrator,
+            agent=matrix_checker,
             context=[matrix_creator_task],
         )
 
