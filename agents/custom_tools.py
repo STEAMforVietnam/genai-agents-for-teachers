@@ -1,5 +1,389 @@
+from typing import List, Dict
 from crewai_tools import tool
+from copy import deepcopy
+from pprint import pprint
 
+def merge_learning_objects(existing_data, new_data):
+    data = deepcopy(existing_data)
+    for kl in data:
+        for question_type in data[kl]:
+            data[kl][question_type]['num_questions'] += int(new_data[kl][question_type]['num_questions'])
+            data[kl][question_type]['total_score'] += int(new_data[kl][question_type]['total_score'])
+    return data
+
+def prepare_matrix_data(json_object):
+    lo_data = {
+        'knowing': {
+            'multiple_choice': {
+                'num_questions': 0,
+                'total_score': 0
+            },
+            'free_form': {
+                'num_questions': 0,
+                'total_score': 0
+            }
+        },
+        'understanding': {
+            'multiple_choice': {
+                'num_questions': 0,
+                'total_score': 0
+            },
+            'free_form': {
+                'num_questions': 0,
+                'total_score': 0
+            }
+        },
+        'application': {
+            'multiple_choice': {
+                'num_questions': 0,
+                'total_score': 0
+            },
+            'free_form': {
+                'num_questions': 0,
+                'total_score': 0
+            }
+        },
+        'adv_application': {
+            'multiple_choice': {
+                'num_questions': 0,
+                'total_score': 0
+            },
+            'free_form': {
+                'num_questions': 0,
+                'total_score': 0
+            }
+        }
+    }
+
+    question_types = {
+        'Trắc nghiệm': 'multiple_choice',
+        'Tự luận': 'free_form'
+    }
+
+    knowledge_levels = {
+        'Nhận biết': 'knowing',
+        'Thông hiểu': 'understanding',
+        'Vận dụng': 'application',
+        'Vận dụng cao': 'adv_application'
+    }
+
+    matrix_data = {}
+
+    for item in json_object:
+        print("parsing json_object")
+        chapter = item["topic"]
+        learning_objective = item["sub_topic"]
+        mastery_level = item["knowledge_level"]
+        question_type = item["question_type"]
+        question_num = int(item["number_of_questions"])
+        total_score = int(item["total_points"])
+
+        lo_question = deepcopy(lo_data)
+
+        lo_question[knowledge_levels[mastery_level]][question_types[question_type]]['num_questions'] = question_num
+        lo_question[knowledge_levels[mastery_level]][question_types[question_type]]['total_score'] = total_score
+
+        if chapter not in matrix_data.keys():
+            matrix_data[chapter] = {learning_objective: lo_question}
+        else:
+            if learning_objective not in matrix_data[chapter].keys():
+                matrix_data[chapter][learning_objective] = lo_question
+            else:
+                matrix_data[chapter][learning_objective] = merge_learning_objects(matrix_data[chapter][learning_objective], lo_question)
+
+    return matrix_data
+
+def percentage_calculation(matrix_data):
+    total = {
+            'knowing': {
+                'multiple_choice': {
+                    'total_questions': 0,
+                    'total_score': 0
+                },
+                'free_form': {
+                    'total_questions': 0,
+                    'total_score': 0
+                }
+            },
+            'understanding': {
+                'multiple_choice': {
+                    'total_questions': 0,
+                    'total_score': 0
+                },
+                'free_form': {
+                    'total_questions': 0,
+                    'total_score': 0
+                }
+            },
+            'application': {
+                'multiple_choice': {
+                    'total_questions': 0,
+                    'total_score': 0
+                },
+                'free_form': {
+                    'total_questions': 0,
+                    'total_score': 0
+                }
+            },
+            'adv_application': {
+                'multiple_choice': {
+                    'total_questions': 0,
+                    'total_score': 0
+                },
+                'free_form': {
+                    'total_questions': 0,
+                    'total_score': 0
+                }
+            }
+        }
+
+    for chapter in matrix_data.keys():
+        for learning_objective in matrix_data[chapter].keys():
+            for kl in matrix_data[chapter][learning_objective].keys():
+                for question in matrix_data[chapter][learning_objective][kl].keys():
+                    total[kl][question]['total_questions'] += matrix_data[chapter][learning_objective][kl][question]['num_questions']
+                    total[kl][question]['total_score'] += matrix_data[chapter][learning_objective][kl][question]['total_score']
+
+    return total
+
+def generating_exam_matrix(matrix_json_obj):
+    html_content = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title></title>
+        <style>
+        html {
+            font-size: 10px;
+        }
+        body {
+            font-family: Georgia, Arial, Helvetica, sans-serif;
+            font-size: 1.6rem;
+        }
+        h1 {
+            font-size: 2rem;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        table {
+            width: 100%;
+            border-style: solid;
+            border-color:#000;
+            border-width: 1px 0 0 1px;
+            border-spacing: 0px;
+        }
+        td, th {
+            border: 1px solid #000;
+            border-width: 0 1px 1px 0;
+            padding: .25rem .5rem;
+        }
+        thead th {
+            background-color: #f0f0f0;
+        }
+        tbody td:first-child {
+            text-align: left;
+        }
+        tfoot td {
+            text-align: center;
+            font-weight: bold;
+            background-color: #f0f0f0;
+        }
+
+        .columnDataNumber {
+            text-align: right;
+        }
+        .borderBottomDashed {
+            border-bottom: 1px dashed #000;
+        }
+        </style>
+        <meta name="description" content="" />
+    </head>
+
+    <body>
+        <h1>
+        MA TRẬN KIỂM TRA GIỮA HỌC KỲ I - NĂM HỌC 2023 - 2024
+        <br>
+        MÔN TOÁN 9 - THỜI GIAN LÀM BÀI 90 PHÚT
+        </h1>
+
+        <!-- NOTE: The table has 14 columns -->
+        <table>
+        <thead>
+            <tr>
+            <th rowspan="3">TT</th>
+            <th rowspan="3">Nội dung Kiến thức</th>
+            <th rowspan="3">Đơn vị Kiến thức</th>
+            <th colspan="8">Mức độ Nhận thức</th>
+            <!-- <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th> -->
+            <th colspan="2">Tổng</th>
+            <!-- <th></th> -->
+            <th rowspan="3" class="columnDataNumber">Tổng điểm</th>
+            </tr>
+            <tr>
+            <!-- <th rowspan="3">TT</th>
+            <th rowspan="3">Nội dung Kiến thức</th>
+            <th rowspan="3">Đơn vị Kiến thức</th> -->
+            <th colspan="2">Nhận biết</th>
+            <!--<th></th> -->
+            <th colspan="2">Thông hiểu</th>
+            <!--<th></th> -->
+            <th colspan="2">Vận dụng</th>
+            <!--<th></th> -->
+            <th colspan="2">Vận dụng cao</th>
+            <!--<th></th> -->
+            <th colspan="2">Số câu hỏi</th>
+            <!--<th></th> -->
+            <!-- <th rowspan="3">Tổng điểm</th> -->
+            </tr>
+            <tr>
+            <!-- <th rowspan="3">TT</th>
+            <th rowspan="3">Nội dung Kiến thức</th>
+            <th rowspan="3">Đơn vị Kiến thức</th> -->
+            <th>TN</th>
+            <th>TL</th>
+            <th>TN</th>
+            <th>TL</th>
+            <th>TN</th>
+            <th>TL</th>
+            <th>TN</th>
+            <th>TL</th>
+            <th>TN</th>
+            <th>TL</th>
+            <!-- <th rowspan="3">Tổng điểm</th> -->
+            </tr>
+        </thead>
+                <tbody>
+            """
+    matrix_data = prepare_matrix_data(matrix_json_obj)
+    print("FINALLY creating HTML content")
+    for seq, chapter in enumerate(matrix_data.keys()):
+        html_content += f"""
+        <tr>
+    <td rowspan="{len(matrix_data[chapter]) * 2}">{seq + 1}</td>
+    <td rowspan="{len(matrix_data[chapter]) * 2}">{chapter}</td>
+        """
+        for lo in matrix_data[chapter].keys():
+            html_content += f"""
+            <td rowspan="2">{lo}</td>
+            <td class="columnDataNumber borderBottomDashed">{matrix_data[chapter][lo]['knowing']['multiple_choice']['num_questions']}</td>
+            <td class="columnDataNumber borderBottomDashed">{matrix_data[chapter][lo]['knowing']['free_form']['num_questions']}</td>
+            <td class="columnDataNumber borderBottomDashed">{matrix_data[chapter][lo]['understanding']['multiple_choice']['num_questions']}</td>
+            <td class="columnDataNumber borderBottomDashed">{matrix_data[chapter][lo]['understanding']['free_form']['num_questions']}</td>
+            <td class="columnDataNumber borderBottomDashed">{matrix_data[chapter][lo]['application']['multiple_choice']['num_questions']}</td>
+            <td class="columnDataNumber borderBottomDashed">{matrix_data[chapter][lo]['application']['free_form']['num_questions']}</td>
+            <td class="columnDataNumber borderBottomDashed">{matrix_data[chapter][lo]['adv_application']['multiple_choice']['num_questions']}</td>
+            <td class="columnDataNumber borderBottomDashed">{matrix_data[chapter][lo]['adv_application']['free_form']['num_questions']}</td>
+            <td class="columnDataNumber borderBottomDashed">{sum([matrix_data[chapter][lo][level]['multiple_choice']['num_questions'] for level in ['knowing', 'understanding', 'application', 'adv_application']])}</td>
+            <td class="columnDataNumber borderBottomDashed">{sum([matrix_data[chapter][lo][level]['free_form']['num_questions'] for level in ['knowing', 'understanding', 'application', 'adv_application']])}</td>
+            <td class="columnDataNumber borderBottomDashed"></td>
+            </tr>
+            <tr>
+            <!-- <td rowspan="4">1</td>
+            <td rowspan="4">Căn bậc hai, căn bậc ba</td>
+            <td rowspan="2">Căn bậc hai</td> -->
+            <td class="columnDataNumber">{matrix_data[chapter][lo]['knowing']['multiple_choice']['total_score']}đ</td>
+            <td class="columnDataNumber">{matrix_data[chapter][lo]['knowing']['free_form']['total_score']}đ</td>
+            <td class="columnDataNumber">{matrix_data[chapter][lo]['understanding']['multiple_choice']['total_score']}đ</td>
+            <td class="columnDataNumber">{matrix_data[chapter][lo]['understanding']['free_form']['total_score']}đ</td>
+            <td class="columnDataNumber">{matrix_data[chapter][lo]['application']['multiple_choice']['total_score']}đ</td>
+            <td class="columnDataNumber">{matrix_data[chapter][lo]['application']['free_form']['total_score']}đ</td>
+            <td class="columnDataNumber">{matrix_data[chapter][lo]['adv_application']['multiple_choice']['total_score']}đ</td>
+            <td class="columnDataNumber">{matrix_data[chapter][lo]['adv_application']['free_form']['total_score']}đ</td>
+            <td class="columnDataNumber"></td>
+            <td class="columnDataNumber"></td>
+            <td class="columnDataNumber">{sum([matrix_data[chapter][lo][level]['multiple_choice']['total_score'] for level in ['knowing', 'understanding', 'application', 'adv_application']]) +  sum([matrix_data[chapter][lo][level]['free_form']['total_score'] for level in ['knowing', 'understanding', 'application', 'adv_application']])} </td>
+            </tr>
+            """
+    total = percentage_calculation(matrix_data)
+
+    total_score = sum([
+        total[kl]['multiple_choice']['total_score'] for kl in
+        ['knowing', 'understanding', 'application', 'adv_application']
+    ]) + sum([
+        total[kl]['free_form']['total_score'] for kl in
+        ['knowing', 'understanding', 'application', 'adv_application']
+    ])
+    knowing_score = sum([
+        total['knowing'][q]['total_score']
+        for q in ['multiple_choice', 'free_form']
+    ])
+    understanding_score = sum([
+        total['understanding'][q]['total_score']
+        for q in ['multiple_choice', 'free_form']
+    ])
+    application_score = sum([
+        total['application'][q]['total_score']
+        for q in ['multiple_choice', 'free_form']
+    ])
+    adv_application_score = sum([
+        total['adv_application'][q]['total_score']
+        for q in ['multiple_choice', 'free_form']
+    ])
+
+    html_content += f"""
+            </tbody>
+            <tfoot>
+            <tr>
+            <td colspan="3">Tổng</td>
+            <!-- <td></td>
+            <td></td> -->
+            <td class="columnDataNumber">{total['knowing']['multiple_choice']['total_questions']}</td>
+            <td class="columnDataNumber">{total['knowing']['free_form']['total_questions']}</td>
+            <td class="columnDataNumber">{total['understanding']['multiple_choice']['total_questions']}</td>
+            <td class="columnDataNumber">{total['understanding']['free_form']['total_questions']}</td>
+            <td class="columnDataNumber">{total['application']['multiple_choice']['total_questions']}</td>
+            <td class="columnDataNumber">{total['application']['free_form']['total_questions']}</td>
+            <td class="columnDataNumber">{total['adv_application']['multiple_choice']['total_questions']}</td>
+            <td class="columnDataNumber">{total['adv_application']['free_form']['total_questions']}</td>
+            <td class="columnDataNumber">{sum([total[kl]['multiple_choice']['total_questions'] for kl in ['knowing', 'understanding', 'application', 'adv_application']])}</td>
+            <td class="columnDataNumber">{sum([total[kl]['free_form']['total_questions'] for kl in ['knowing', 'understanding', 'application', 'adv_application']])}</td>
+            <td class="columnDataNumber">{total_score}</td>
+            </tr>
+            <tr>
+            <td colspan="3">Tỷ lệ %</td>
+            <!-- <td></td>
+            <td></td> -->
+            <td colspan="2">{knowing_score/total_score*100:.2f}%</td>
+            <!-- <td></td> -->
+            <td colspan="2">{understanding_score/total_score*100:.2f}%</td>
+            <!-- <td></td> -->
+            <td colspan="2">{application_score/total_score*100:.2f}%</td>
+            <!-- <td></td> -->
+            <td colspan="2">{adv_application_score/total_score*100:.2f}%</td>
+            <!-- <td></td> -->
+            <td colspan="2">{(knowing_score + understanding_score + application_score + adv_application_score)/total_score*100:.2f}%</td>
+            <!-- <td></td> -->
+            <td class="columnDataNumber"></td>
+            </tr>
+            <tr>
+            <td colspan="3">Tỷ lệ chung %</td>
+            <!-- <td></td>
+            <td></td> -->
+            <td colspan="4">{(knowing_score + understanding_score)/total_score*100:.2f}%</td>
+            <!-- <td></td> -->
+            <!-- <td></td> -->
+            <!-- <td></td> -->
+            <td colspan="4">{(application_score + adv_application_score)/total_score*100:.2f}%</td>
+            <!-- <td></td> -->
+            <!-- <td></td> -->
+            <!-- <td></td> -->
+            <td colspan="2">{(knowing_score + understanding_score + application_score + adv_application_score)/total_score*100:.2f}%</td>
+            <!-- <td></td> -->
+            <td class="columnDataNumber"></td>
+            </tr>
+        </tfoot>
+    </body>
+    </html>
+    """
+    return html_content
 
 @tool("ExamHTMLMakerTool")
 def create_exam_html_maker_tool(json_output):
@@ -235,13 +619,29 @@ def create_exam_html_maker_tool(json_output):
     #         exam.write(question_html)
 
 @tool("MatrixHTMLMakerTool")
-def create_matrix_html_maker_tool(json_output):
+def create_matrix_html_maker_tool(input: List[Dict]) -> str:
     """
-    This tool creates an html file from the JSON file
+    This tool creates an html file from the JSON action input data
+    Args:
+        input (List[MatrixJSON]): is a list of dictionary. Each item in the list follow
+        MatrixJSON structure. For example:
+        [
+            {'topic': 'test',
+            'sub_topic': 'example',
+            'knowledge_level': 'Nhận biết',
+            'question_type': 'Trắc nghiệm',
+            'number_of_questions': '4',
+            'total_points': '40'}, 
+            {'topic': 'Cơ học',
+            'sub_topic': 'Động lực học',
+            'knowledge_level': 'Thông hiểu',
+            'question_type': 'Tự luận',
+            'number_of_questions': '3',
+            'total_points': '30'}
+        ]
     """
-    # TODO: bring all codes from https://github.com/STEAMforVietnam/Gen-AI-for-Teachers/blob/master/T%E1%BA%A1o-Ma-tr%E1%BA%ADn-%C4%90%E1%BB%81-b%C3%A0i/matrix-generation.ipynb 
-    # and add here
-    print("Gọi TOOL tạo Matrix")
-    print("DỮ LIỆU JSON TRẢ LẠI")
-    print("===============")
-    print(json_output)
+
+    html_content = generating_exam_matrix(input)
+    with open("./matrix.html", "w") as matrix:
+        matrix.write(html_content)
+    return "./matrix.html"
