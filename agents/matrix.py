@@ -27,7 +27,7 @@ class MatrixCrew(CustomCrew):
         matrix_orchestrator_goal = self.orchestrator_prompt.goal
         matrix_creator_backstory = self.orchestrator.prompt.backstory
 
-        orchestrator = Agent(
+        matrix_orchestrator = Agent(
             role=matrix_orchestrator_role,
             goal=(matrix_orchestrator_goal),
             backstory=matrix_creator_backstory,
@@ -39,10 +39,10 @@ class MatrixCrew(CustomCrew):
 
         matrix_orchestrator_task_description = self.orchestrator_prompt.task_description
         matrix_orchestrator_task_expected_output = self.orchestrator_prompt.task_expected_output
-        orchestrator_task = Task(
+        matrix_orchestrator_task = Task(
             description=(matrix_orchestrator_task_description),
             expected_output=matrix_orchestrator_task_expected_output,
-            agent=orchestrator,
+            agent=matrix_orchestrator,
         )
 
         ### Add Matrix Creator Agent (Ngừoi Kiến Tạo), responsible for all "Tạo" task
@@ -132,8 +132,8 @@ class MatrixCrew(CustomCrew):
 
         ### Finally, compose Crew
         return Crew(
-                agents=[matrix_creator, matrix_checker, html_creator],
-                tasks=[matrix_creator_task, matrix_checker_task, html_task],
+                agents=[matrix_orchestrator, matrix_creator, matrix_checker, html_creator],
+                tasks=[matrix_orchestrator_task, matrix_creator_task, matrix_checker_task, html_task],
                 # manager_agent=orchestrator,
                 memory=True,
                 # process=Process.hierarchical,

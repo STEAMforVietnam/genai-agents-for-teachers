@@ -5,11 +5,12 @@ from tools.exam import ExamTool
 
 class ExamCrew(CustomCrew):
     def __init__(self, creator_prompt,
+                 orchestrator_prompt=None,
                  checker_prompt=None,
                  html_creator_prompt=None):
         super(ExamCrew, self).__init__(
-            creator_prompt, checker_prompt,
-            html_creator_prompt)
+            creator_prompt, orchestrator_prompt,
+            checker_prompt, html_creator_prompt)
         self.project = "TẠO_ĐỀ_BÀI_THI"
 
     def _get_crew(self):
@@ -28,10 +29,13 @@ class ExamCrew(CustomCrew):
         )
 
     def _create_orchestrator_agent(self):
+        test_orchestrator_role = self.orchestrator_prompt.role
+        test_orchestrator_goal = self.orchestrator_prompt.goal
+        test_creator_backstory = self.orchestrator.prompt.backstory
         return Agent(
-            role="Người Điều Phối",
-            goal="Điều phối quá trình tạo đề thi và đưa ra quyết định cuối cùng",
-            backstory="Bạn là một điều phối viên giáo dục giàu kinh nghiệm, chịu trách nhiệm giám sát quá trình tạo đề thi.",
+            role=test_orchestrator_role,
+            goal=test_orchestrator_goal,
+            backstory=test_creator_backstory,
             verbose=True,
             allow_delegation=False,
             llm=self.llm,
