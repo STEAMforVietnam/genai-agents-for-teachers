@@ -642,7 +642,12 @@ def create_matrix_html_maker_tool(input: List[Dict], topic: str) -> str:
         ]
     """
 
+    ### Write HTML
     html_content = generating_exam_matrix(input, topic)
     with open("./matrix.html", "w") as matrix:
         matrix.write(html_content)
-    return "./matrix.html"
+
+    ### Write JSON
+    with open("./matrix.json", "w") as matrix:
+        matrix.write(input)
+    return ["./matrix.html", "./matrix.json"]
