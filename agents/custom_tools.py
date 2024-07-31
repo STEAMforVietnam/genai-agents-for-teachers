@@ -657,6 +657,9 @@ def create_exam_html_maker_tool(
 
     with open("./answer_key.html", "w", encoding="utf-8") as exam_key:
         exam_key.write(answer_key_html)
+
+    with open("./exam.json", 'w') as f:
+        json.dump(json_output, f)
     return "./exam.html"
     
 
