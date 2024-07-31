@@ -126,7 +126,7 @@ class ExamCrew(CustomCrew):
             agent=agent
         )
 
-    def run(self, topic: str, chapter: str):
-        result = self.crew.kickoff({"topic": topic, "chapter": chapter})
+    def run(self, inputs=None):
+        result = self.crew.kickoff(inputs=inputs)
         return result
 
