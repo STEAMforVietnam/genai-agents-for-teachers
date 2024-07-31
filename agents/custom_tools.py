@@ -388,7 +388,12 @@ def generating_exam_matrix(matrix_json_obj, topic: str):
     return html_content
 
 @tool("ExamHTMLMakerTool")
-def create_exam_html_maker_tool(json_output: Dict) -> str:
+def create_exam_html_maker_tool(
+  json_output: Dict, province: str, school: str, 
+  exam_name: str, subject: str,
+  year: str,
+  class_year: str,
+  total_time: str) -> str:
     """
     This tool creates an html file from the JSON file
     """
