@@ -14,6 +14,7 @@ COLLECTION_NAME = 's4v_python_oh_bkai'
 
 class CustomCrew:
     def __init__(self, creator_prompt,
+                 orchestrator_prompt=None,
                  checker_prompt=None,
                  html_creator_prompt=None):
         self.file_path: str = "."
@@ -25,6 +26,7 @@ class CustomCrew:
         self.creator_prompt = creator_prompt
         self.checker_prompt = checker_prompt
         self.html_creator_prompt = html_creator_prompt
+        self.orchestrator_prompt = orchestrator_prompt
         self.crew: Crew = self._get_crew()
     
     def _initialize_retrieval_tools(self) -> RetrievalTools:

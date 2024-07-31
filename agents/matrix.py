@@ -9,11 +9,12 @@ class MatrixCrew(CustomCrew):
     Textbooks and other reference materials, such as Ministry of Education's instruction
     """
     def __init__(self, creator_prompt,
+                 orchestrator_prompt=None,
                  checker_prompt=None,
                  html_creator_prompt=None):
         super(MatrixCrew, self).__init__(
-            creator_prompt, checker_prompt, 
-            html_creator_prompt)
+          creator_prompt, orchestrator_prompt, 
+          checker_prompt, html_creator_prompt)
 
     def _get_crew(self):
         """
@@ -22,25 +23,25 @@ class MatrixCrew(CustomCrew):
         self._get_tools()
 
         ### Add Orchestrator (Người Giám Sát)
+        matrix_orchestrator_role = self.orchestrator_prompt.role
+        matrix_orchestrator_goal = self.orchestrator_prompt.goal
+        matrix_creator_backstory = self.orchestrator.prompt.backstory
+
         orchestrator = Agent(
-            role="Giám Sát",
-            goal=("Bạn sẽ giao việc tạo $Ma_Trận_Đề_Bài cho matrix_creator và việc kiểm tra chất lượng của $Ma_Trận_Đề_Bài cho matrix_checker"),
-            backstory="",
+            role=matrix_orchestrator_role,
+            goal=(matrix_orchestrator_goal),
+            backstory=matrix_creator_backstory,
             allow_delegation=False,
             llm=self.llm,
             verbose=True,
             max_iter=5
         )
 
+        matrix_orchestrator_task_description = self.orchestrator_prompt.task_description
+        matrix_orchestrator_task_expected_output = self.orchestrator_prompt.task_expected_output
         orchestrator_task = Task(
-            description=(
-                "Đầu tiên, Bạn sẽ giao việc tạo $Ma_Trận_Đề_Bài cho matrix_creator và nhận lại kết quả từ matrix_creator."
-                "Tiếp theo, hãy giao $Ma_Trận_Đề_Bài này cho matrix_checker và yêu cầu đánh giá. Cuối cùng, bạn sẽ nhận lại một đánh giá về từ matrix_checker."
-                "Sau đó, dựa trên kết quả nhận tại từ matrix_checker, bạn sẽ chọn một trong hai quyết định:"
-                "1. Yêu cầu matrix_creator sửa lại $Ma_Trận_Đề_Bài theo gợi ý từ matrix_checker"
-                "2. Nhận định công việc đã hoàn thành trả lại kết quả $Ma_Trận_Đề_Bài"
-            ),
-            expected_output="Ma_Trận_Đề_Bài trả về từ matrix_creator",
+            description=(matrix_orchestrator_task_description),
+            expected_output=matrix_orchestrator_task_expected_output,
             agent=orchestrator,
         )
 
