@@ -17,25 +17,27 @@ class ExamCrew(CustomCrew):
         orchestrator = self._create_orchestrator_agent()
         exam_generator = self._create_exam_generator_agent()
         checker = self._create_checker_agent()
+        exam_html_creator = self._create_exam_html_creator_agent()
 
         orchestrator_task = self._create_orchestrator_task(orchestrator)
         exam_generator_task = self._create_exam_generator_task(exam_generator)
         checker_task = self._create_checker_task(checker)
+        exam_html_creator_task = self._create_exam_html_creator_task(exam_html_creator)
 
         return Crew(
-            agents=[orchestrator, exam_generator, checker],
-            tasks=[orchestrator_task, exam_generator_task, checker_task],
+            agents=[orchestrator, exam_generator, checker, exam_html_creator],
+            tasks=[orchestrator_task, exam_generator_task, checker_task, exam_html_creator_task],
             verbose=2
         )
 
     def _create_orchestrator_agent(self):
         test_orchestrator_role = self.orchestrator_prompt.role
         test_orchestrator_goal = self.orchestrator_prompt.goal
-        test_creator_backstory = self.orchestrator.prompt.backstory
+        test_orchestrator_backstory = self.orchestrator.prompt.backstory
         return Agent(
             role=test_orchestrator_role,
             goal=test_orchestrator_goal,
-            backstory=test_creator_backstory,
+            backstory=test_orchestrator_backstory,
             verbose=True,
             allow_delegation=False,
             llm=self.llm,
@@ -43,69 +45,82 @@ class ExamCrew(CustomCrew):
         )
 
     def _create_exam_generator_agent(self):
+        test_creator_role = self.creator_prompt.role
+        test_creator_goal = self.creator_prompt.goal
+        test_creator_backstory = self.creator.prompt.backstory
         return Agent(
-            role="Người Tạo Đề Thi",
-            goal="Tạo ra các đề thi và đáp án chất lượng cao dựa trên nội dung được cung cấp",
-            backstory="Bạn là một chuyên gia trong việc tạo ra các bài kiểm tra thử thách và toàn diện cho học sinh.",
+            role=test_creator_role,
+            goal=test_creator_goal,
+            backstory=test_creator_backstory,
             verbose=True,
             allow_delegation=False,
             llm=self.llm
         )
 
     def _create_checker_agent(self):
+        test_checker_role = self.checker_prompt.role
+        test_checker_goal = self.checker_prompt.goal
+        test_checker_backstory = self.checker.prompt.backstory
         return Agent(
-            role="Người Kiểm Tra Đề Thi",
-            goal="Xác minh và đánh giá chất lượng của đề thi và đáp án được tạo ra",
-            backstory="Bạn là một người đánh giá tỉ mỉ với nhiều năm kinh nghiệm trong việc đánh giá chất lượng đề thi.",
+            role=test_checker_role,
+            goal=test_checker_goal,
+            backstory=test_checker_backstory,
+            verbose=True,
+            allow_delegation=False,
+            llm=self.llm
+        )
+
+    def _create_exam_html_creator_agent(self):
+        test_html_creator_role = self.html_creator_prompt.role
+        test_html_creator_goal = self.html_creator_prompt.goal
+        test_html_creator_backstory = self.html_creator.prompt.backstory
+        return Agent(
+            role=test_html_creator_role,
+            goal=test_html_creator_goal,
+            backstory=test_html_creator_backstory,
             verbose=True,
             allow_delegation=False,
             llm=self.llm
         )
 
     def _create_orchestrator_task(self, agent):
+        test_orchestrator_task_description = self.orchestrator_prompt.task_description
+        test_orchestrator_task_expected_output = self.orchestrator_prompt.task_expected_output
         return Task(
-            description=(
-                "1. Sử dụng ExamTool tìm dữ liệu từ {chapter}. Chỉ tìm trong phạm vi liên quan, không tìm lan man. "
-                "2. Chuyển dữ liệu vừa tìm được cho Người tạo đề thi "
-                "3. Tất cả output đều bằng tiếng Việt "
-                "4. Sau khi có phản hồi từ Người Kiểm Tra Đề Thi, sẽ dựa trên bản đánh giá và ra quyết định "
-                "5. Nếu đánh gía phản hồi tích cực, sẽ khởi tạo đề thi và câu trả lời theo dạng markdown, de-thi.md, cau-tra-loi.md"
-                "6. Nếu đánh giá chưa tốt, yêu cầu Người tạo đề thi xem xét thử lại việc tạo đề thi (tối đa là 3 lần thử)"
-            ),
-            expected_output="dữ liệu có được từ kết quả tìm kiếm",
+            description=(test_orchestrator_task_description),
+            expected_output=test_orchestrator_task_expected_output,
             agent=agent,
-            output_file="dulieu-de-thi.md",
+            #output_file="dulieu-de-thi.md",
             tools=[ExamTool.get_chapter]
         )
 
     def _create_exam_generator_task(self, agent):
+        test_creator_task_description = self.creator_prompt.task_description
+        test_creator_task_expected_output = self.creator_prompt.task_expected_output
         return Task(
-            description=(
-                "1. Nhận thông tin nội dung cho một chương cụ thể từ Người Điều Phối. "
-                "2. Tạo một đề thi toàn diện dựa trên nội dung đã cung cấp. "
-                "3. Tạo một đáp án riêng cho đề thi đã tạo. "
-                "4. Đảm bảo đề thi bao gồm các mức độ khó khác nhau và các loại câu hỏi đa dạng. "
-                "5. Trả lại cả đề thi và đáp án cho Người Kiểm Tra Đề Thi."
-                "6. Lưu đề thi và câu trả lời vào markdown file, de-thi.md, dap-an.md"
-                "7. Tất cả output đều bằng tiếng Việt"
-            ),
-            expected_output="Đề Thi và đáp án theo yều cầu của người điều phối",
-            output_file="de-thi.md, dap-an.md",
+            description=(test_creator_task_description),
+            expected_output=test_creator_task_expected_output,
+            #output_file="de-thi.md, dap-an.md",
             agent=agent
         )
 
     def _create_checker_task(self, agent):
+        test_checker_task_description = self.checker_prompt.task_description
+        test_checker_task_expected_output = self.checker_prompt.task_expected_output
         return Task(
-            description=(
-                "1. Nhận đề thi và đáp án đã tạo từ Người Điều Phối. "
-                "2. Xem xét kỹ lưỡng đề thi về chất lượng, độ rõ ràng và tính phù hợp. "
-                "3. Kiểm tra đáp án về độ chính xác và đầy đủ. "
-                "4. Cung cấp phản hồi chi tiết về đề thi và đáp án, bao gồm cả đề xuất cải thiện nếu cần thiết. "
-                "5. Trả lại đánh giá của bạn cho Người Điều Phối."
-                "6. Tất cả output đều bằng tiếng Việt"
-            ),
-            expected_output="Một bản đánh giá chi tiết việc tạo đề thi",
-            output_file="danh-gia.md",
+            description=(test_checker_task_description),
+            expected_output=test_checker_task_expected_output,
+            #output_file="danh-gia.md",
+            agent=agent
+        )
+
+    def _create_exam_html_creator_task(self, agent):
+        test_html_creator_task_description = self.html_creator_prompt.task_description
+        test_html_creator_task_expected_output = self.html_creator_prompt.task_expected_output
+        return Task(
+            description=(test_html_creator_task_description),
+            expected_output=test_html_creator_task_expected_output,
+            #output_file="de-thi.md, dap-an.md",
             agent=agent
         )
 
