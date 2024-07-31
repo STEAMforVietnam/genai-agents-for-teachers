@@ -16,3 +16,7 @@ class MatrixJSON(BaseModel):
     question_type: str
     number_of_questions: int
     total_points: int
+
+class ExamJSON(BaseModel):
+    #TODO
+    pass

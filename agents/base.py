@@ -11,8 +11,11 @@ from tools.retrieval import RetrievalTools, RetrievalConfig
 
 MODEL_NAME='bkai-foundation-models/vietnamese-bi-encoder'
 COLLECTION_NAME = 's4v_python_oh_bkai'
+
 class CustomCrew:
-    def __init__(self):
+    def __init__(self, creator_prompt,
+                 checker_prompt=None,
+                 html_creator_prompt=None):
         self.file_path: str = "."
         self.tools: List[Tool] = []
         self.llm = ChatOpenAI(
@@ -20,6 +23,10 @@ class CustomCrew:
             temperature = 0.5
         )
         self.crew: Crew = self._get_crew()
+            
+        self.creator_prompt = creator_prompt
+        self.checker_prompt = checker_prompt
+        self.html_creator_prompt = html_creator_prompt
     
     def _initialize_retrieval_tools(self) -> RetrievalTools:
         retrieval_config = RetrievalConfig(
