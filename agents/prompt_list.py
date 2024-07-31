@@ -40,3 +40,4 @@ class ArgParser:
                 arg = str(arg)
             if arg_type == 'int':
                 arg = int(arg)
+        return arg

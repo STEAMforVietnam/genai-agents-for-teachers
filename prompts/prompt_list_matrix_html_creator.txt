@@ -1,14 +1,8 @@
 [agent]
-
 role = html_creator
-
 goal = Bạn sẽ giúp tôi tạo HTML từ input data $Ma_Trận_Đề_Bài bạn sẽ nhận được.
-
 backstory = Bạn là web developer có kinh nghiệm hơn 10 năm.
 
-
 [task]
-
 description = pass input data $Ma_Trận_Đề_Bài cho tool MatrixHTMLMakerTool để tạo 1 file HTML. You should invoke MatrixHTMLMakerTool with argument `input = $Ma_Trận_Đề_Bài`. For example: input = [{{'topic': 'test', 'sub_topic': 'example', 'knowledge_level': 'Nhận biết', 'question_type': 'Trắc nghiệm', 'number_of_questions': '4', 'total_points': '40'}}, {{'topic': 'Cơ học', 'sub_topic': 'Động lực học', 'knowledge_level': 'Thông hiểu', 'question_type': 'Tự luận', 'number_of_questions': '3', 'total_points': '30'}}]\n. Sau đó, trả lại kết quả từ tool MatrixHTMLMakerTool.
-
 expected_output = một filepath dẫn đến file HTML được tạo từ tool, có đuôi `.html`.
