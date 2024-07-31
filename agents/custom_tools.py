@@ -391,7 +391,35 @@ def create_exam_html_maker_tool(json_output):
     """
     This tool creates an html file from the JSON file
     """
-    def compile_questions(self, question_sets, is_answer_key=False):
+    def sort_questions(question_sets):
+        """
+        Sắp xếp các câu hỏi theo thứ tự Trắc nghiệm rồi đến Tự luận
+        Đánh số lại theo đúng thứ tự
+        """
+        import random
+        import operator
+        items = list(question_sets.items())
+        random.shuffle(items)
+
+        question_sets_shuffled_sorted = []
+
+        index = 1
+        for item in items:
+            item = list(item)
+            item[0] = 'câu hỏi ' + str(index)
+            if item[1].get("thông_tin_nội_bộ_(học_sinh_không_thấy)").get("Loại câu hỏi") == "Trắc nghiệm":
+                question_sets_shuffled_sorted.append(tuple(item))
+                index += 1
+
+        for item in items:
+            item = list(item)
+            item[0] = 'câu hỏi ' + str(index)
+            if item[1].get("thông_tin_nội_bộ_(học_sinh_không_thấy)").get("Loại câu hỏi") == "Tự luận":
+                question_sets_shuffled_sorted.append(tuple(item))
+                index += 1
+        return dict(question_sets_shuffled_sorted)
+
+    def compile_questions(question_sets, is_answer_key=False):
         """
         Trích câu hỏi, số điểm, và câu trả lời ra từ dữ liệu trong `question_sets`
         Nếu đang tạo file pdf cho bộ đề, để giá trị của is_answer_key = False
@@ -425,10 +453,10 @@ def create_exam_html_maker_tool(json_output):
 
             if is_answer_key:
                 if value.get("thông_tin_nội_bộ_(học_sinh_không_thấy)").get("Loại câu hỏi") == "Trắc nghiệm":
-                    answer_key = fr"""<strong>Đáp Án: {value.get('đáp_án').get('Kết quả')}</strong>"""
+                  answer_key = fr"""<strong>Đáp Án: {value.get('đáp_án').get('Kết quả')}</strong>"""
                 else:
-                    trinh_bay = value.get('đáp_án').get('Trình bày').replace("\\n", "\n").replace(' \\\n ', ' \\\\\n ').replace(' \\\\ ', ' \\\\\n ').replace(' \\\\\ ', ' \\\\\n ').replace(' \\\ ', ' \\\\\n ')
-                    answer_key = fr"""<strong>Đáp Án:</strong>""" + fr"""{trinh_bay}</strong>"""
+                  trinh_bay = value.get('đáp_án').get('Trình bày').replace("\\n", "\n").replace(' \\\n ', ' \\\\\n ').replace(' \\\\ ', ' \\\\\n ').replace(' \\\\\ ', ' \\\\\n ').replace(' \\\ ', ' \\\\\n ')
+                  answer_key = fr"""<strong>Đáp Án:</strong>""" + fr"""{trinh_bay}</strong>"""
                 question += answer_key
 
             if value.get("thông_tin_nội_bộ_(học_sinh_không_thấy)").get("Loại câu hỏi") == "Trắc nghiệm":
@@ -438,7 +466,7 @@ def create_exam_html_maker_tool(json_output):
 
         return list_of_questions, list_of_tl
 
-    def merge_all_sections(self, list_of_questions, list_of_tl):
+    def merge_all_sections(list_of_questions, list_of_tl):
         TEST_TMPL = """
         <!DOCTYPE html>
         <html>
@@ -604,20 +632,27 @@ def create_exam_html_maker_tool(json_output):
         </html>"""
         return TEST_TMPL+title+part_1+part_2+footer
 
-    def exam_generation(self, question_sets, is_answer_key=False):
-        list_of_questions, list_of_tl = self.compile_questions(question_sets, is_answer_key)
-        html_content = self.merge_all_sections(list_of_questions, list_of_tl)
+    def exam_generation(question_sets, is_answer_key=False):
+        list_of_questions, list_of_tl = compile_questions(question_sets, is_answer_key)
+        html_content = merge_all_sections(list_of_questions, list_of_tl)
         return html_content
     print("DỮ LIỆU JSON TRẢ LẠI")
     print("===============")
     print(json_output)
-    # exam_json_file = os.path.join(self.file_path, "./exam-in-progress.json")
-    # exam_html_file = os.path.join(self.file_path, "./exam.html")
-    # with open(exam_json_file, "r", encoding="utf-8") as file:
-    #     question_sets = json.load(file)
-    #     question_html = self.exam_generation(question_sets=question_sets)
-    #     with open(exam_html_file, "w", encoding="utf-8") as exam:
-    #         exam.write(question_html)
+
+    question_sets_cleaned = {lesson.lower(): {k.lower().replace(" ", "_"): v for k, v in detail.items()}
+                             for lesson, detail in json_output.items()}
+    question_sets_cleaned_shuffled = sort_questions(question_sets_cleaned)
+    question_html = exam_generation(question_sets_cleaned_shuffled)
+    answer_key_html = exam_generation(question_sets_cleaned_shuffled, is_answer_key=True)
+    
+    with open("./exam.html", "w", encoding="utf-8") as exam:
+        exam.write(question_html)
+
+    with open("./answer_key.html", "w", encoding="utf-8") as exam_key:
+        exam_key.write(answer_key_html)
+    return ["./exam.html", "./answer_key.html"]
+    
 
 @tool("MatrixHTMLMakerTool")
 def create_matrix_html_maker_tool(input: List[Dict], topic: str) -> str:
