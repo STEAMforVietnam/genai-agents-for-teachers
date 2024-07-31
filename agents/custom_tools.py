@@ -652,7 +652,7 @@ def create_exam_html_maker_tool(input: Dict) -> str:
 
     with open("./answer_key.html", "w", encoding="utf-8") as exam_key:
         exam_key.write(answer_key_html)
-    return ["./exam.html", "./answer_key.html"]
+    return "./exam.html"
     
 
 @tool("MatrixHTMLMakerTool")
