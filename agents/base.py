@@ -7,9 +7,10 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_milvus.vectorstores import Milvus
 from langchain.tools.retriever import create_retriever_tool
 from .custom_tools import create_matrix_html_maker_tool
+from tools.retrieval import RetrievalTools, RetrievalConfig
 
 MODEL_NAME='bkai-foundation-models/vietnamese-bi-encoder'
-
+COLLECTION_NAME = 's4v_python_oh_bkai'
 class CustomCrew:
     def __init__(self):
         self.file_path: str = "."
@@ -19,31 +20,26 @@ class CustomCrew:
             temperature = 0.5
         )
         self.crew: Crew = self._get_crew()
-        
+    
+    def _initialize_retrieval_tools(self) -> RetrievalTools:
+        retrieval_config = RetrievalConfig(
+            embedding_model=MODEL_NAME,
+            milvus_collection=COLLECTION_NAME,
+            milvus_connection_args={"uri": os.environ.get("DATABSE_PUBLIC_ENDPOINT"),
+                            "token": os.environ.get("DATABASE_API_KEY"),
+                            "secure": True
+            }
+        )
+        return RetrievalTools(retrieval_config)
+
+
     def _get_tools(self):
         """
         create all tools that will be available for all agents and crews
         """
-
-        ### ADD RETRIEVER TOOL
-        embedding_model = HuggingFaceEmbeddings(model_name=MODEL_NAME)
-        retriever = Milvus(
-            embedding_function=embedding_model,
-            collection_name="s4v_python_oh_bkai",
-            connection_args={"uri": os.environ.get("DATABSE_PUBLIC_ENDPOINT"),
-                            "token": os.environ.get("DATABASE_API_KEY"),
-                            "secure": True
-            },
-        ).as_retriever(search_params={
-                "k":20
-            })
-        
-        retriever_tool = create_retriever_tool(
-            retriever=retriever,
-            name="LessonRetrieverTool",
-            description="Use this tool to retrieve contents from Textbook"
-        )
-        self.tools.append(retriever_tool)
+        retrieval_tool = self._initialize_retrieval_tools()
+        tools = retrieval_tool.get_tools()
+        self.tools.append(tools[0])
 
         ### ADD JSONParserTool
 

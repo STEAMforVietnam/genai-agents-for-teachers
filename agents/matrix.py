@@ -58,7 +58,7 @@ class MatrixCrew(CustomCrew):
         matrix_creator_task = Task(
             description=(
                 "Tạo Ma_Trận_Đề_Bài Kiểm tra phù hợp với các Chương và Bài học trong Sách Giáo khoa {topic} của Nhà xuất bản Giáo dục Việt Nam thoả mãn các bước sau:"
-                "1. Hãy dùng tool LessonRetrieverTool để tìm các tên các chương và bài học trích từ trích từ file mục_lục.pdf"
+                "1. Hãy dùng tool LessonRetrieverTool với query argument `query = {sub_topics}` để tìm các tên các bài học trích từ file mục_lục.pdf"
                 "2. Lập các Ma_Trận_Đề_Bài Kiểm tra theo một cấu trúc dữ liệu MatrixJSON:\n"
                 "[{{'topic': '...', 'sub_topic': '...', 'knowledge_level': '...', 'question_type': '...', 'number_of_questions': '...', 'total_points': '...'}}]\n"
                 "3. Tất cả các output bằng tiếng Việt.\n"

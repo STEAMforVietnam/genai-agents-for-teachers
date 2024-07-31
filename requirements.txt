@@ -24,3 +24,9 @@ grpcio==1.63.0
 crewai
 crewai[tools]
 sentence-transformers
+
+llama-index 
+llama-index-vector-stores-milvus 
+pymilvus 
+llama-index-llms-openai 
+llama-index-readers-file
