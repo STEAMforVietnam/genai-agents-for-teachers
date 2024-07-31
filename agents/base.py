@@ -22,11 +22,10 @@ class CustomCrew:
             model = "gpt-4o-mini",
             temperature = 0.5
         )
-        self.crew: Crew = self._get_crew()
-            
         self.creator_prompt = creator_prompt
         self.checker_prompt = checker_prompt
         self.html_creator_prompt = html_creator_prompt
+        self.crew: Crew = self._get_crew()
     
     def _initialize_retrieval_tools(self) -> RetrievalTools:
         retrieval_config = RetrievalConfig(
