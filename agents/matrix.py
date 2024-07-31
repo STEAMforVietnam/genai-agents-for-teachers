@@ -25,12 +25,12 @@ class MatrixCrew(CustomCrew):
         ### Add Orchestrator (Người Giám Sát)
         matrix_orchestrator_role = self.orchestrator_prompt.role
         matrix_orchestrator_goal = self.orchestrator_prompt.goal
-        matrix_creator_backstory = self.orchestrator.prompt.backstory
+        matrix_orchestrator_backstory = self.orchestrator_prompt.backstory
 
         matrix_orchestrator = Agent(
             role=matrix_orchestrator_role,
             goal=(matrix_orchestrator_goal),
-            backstory=matrix_creator_backstory,
+            backstory=matrix_orchestrator_backstory,
             allow_delegation=False,
             llm=self.llm,
             verbose=True,

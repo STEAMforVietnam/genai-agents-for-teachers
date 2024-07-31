@@ -2,6 +2,7 @@ from typing import List, Dict
 from crewai_tools import tool
 from copy import deepcopy
 from pprint import pprint
+import json
 
 def merge_learning_objects(existing_data, new_data):
     data = deepcopy(existing_data)
@@ -683,6 +684,6 @@ def create_matrix_html_maker_tool(input: List[Dict], topic: str) -> str:
         matrix.write(html_content)
 
     ### Write JSON
-    with open("./matrix.json", "w") as matrix:
-        matrix.write(input)
+    with open('matrix.json', 'w') as f:
+        json.dump(input, f)
     return ["./matrix.html", "./matrix.json"]

@@ -1,7 +1,8 @@
-
-from crewai import Agent, Task, Crew, Process, JSONSearchTool
+from crewai import Agent, Task, Crew, Process
 from agents.base import CustomCrew
 from tools.exam import ExamTool
+from agents.custom_tools import create_exam_html_maker_tool
+
 
 class ExamCrew(CustomCrew):
     def __init__(self, creator_prompt,
@@ -33,7 +34,7 @@ class ExamCrew(CustomCrew):
     def _create_orchestrator_agent(self):
         test_orchestrator_role = self.orchestrator_prompt.role
         test_orchestrator_goal = self.orchestrator_prompt.goal
-        test_orchestrator_backstory = self.orchestrator.prompt.backstory
+        test_orchestrator_backstory = self.orchestrator_prompt.backstory
         return Agent(
             role=test_orchestrator_role,
             goal=test_orchestrator_goal,
@@ -47,7 +48,7 @@ class ExamCrew(CustomCrew):
     def _create_exam_generator_agent(self):
         test_creator_role = self.creator_prompt.role
         test_creator_goal = self.creator_prompt.goal
-        test_creator_backstory = self.creator.prompt.backstory
+        test_creator_backstory = self.creator_prompt.backstory
         return Agent(
             role=test_creator_role,
             goal=test_creator_goal,
@@ -60,7 +61,7 @@ class ExamCrew(CustomCrew):
     def _create_checker_agent(self):
         test_checker_role = self.checker_prompt.role
         test_checker_goal = self.checker_prompt.goal
-        test_checker_backstory = self.checker.prompt.backstory
+        test_checker_backstory = self.checker_prompt.backstory
         return Agent(
             role=test_checker_role,
             goal=test_checker_goal,
@@ -73,13 +74,14 @@ class ExamCrew(CustomCrew):
     def _create_exam_html_creator_agent(self):
         test_html_creator_role = self.html_creator_prompt.role
         test_html_creator_goal = self.html_creator_prompt.goal
-        test_html_creator_backstory = self.html_creator.prompt.backstory
+        test_html_creator_backstory = self.html_creator_prompt.backstory
         return Agent(
             role=test_html_creator_role,
             goal=test_html_creator_goal,
             backstory=test_html_creator_backstory,
             verbose=True,
             allow_delegation=False,
+            tools=[create_exam_html_maker_tool],
             llm=self.llm
         )
 
@@ -91,7 +93,7 @@ class ExamCrew(CustomCrew):
             expected_output=test_orchestrator_task_expected_output,
             agent=agent,
             #output_file="dulieu-de-thi.md",
-            tools=[JSONSearchTool(json_path='./matrix.json'), ExamTool.get_chapter]
+            tools=ExamTool.get_chapter
         )
 
     def _create_exam_generator_task(self, agent):

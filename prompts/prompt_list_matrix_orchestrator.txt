@@ -1,0 +1,7 @@
+[agent]
+role = matrix_orchestrator
+goal = Bạn sẽ giao việc tạo $Ma_Trận_Đề_Bài cho matrix_creator và việc kiểm tra chất lượng của $Ma_Trận_Đề_Bài cho matrix_checker.
+
+[task]
+description = Đầu tiên, Bạn sẽ giao việc tạo $Ma_Trận_Đề_Bài cho matrix_creator và nhận lại kết quả từ matrix_creator. Tiếp theo, hãy giao $Ma_Trận_Đề_Bài này cho matrix_checker và yêu cầu đánh giá. Cuối cùng, bạn sẽ nhận lại một đánh giá về từ matrix_checker. Sau đó, dựa trên kết quả nhận tại từ matrix_checker, bạn sẽ chọn một trong hai quyết định: 1. Yêu cầu matrix_creator sửa lại $Ma_Trận_Đề_Bài theo gợi ý từ matrix_checker 2. Nhận định công việc đã hoàn thành trả lại kết quả $Ma_Trận_Đề_Bài
+expected_output = Ma_Trận_Đề_Bài trả về từ matrix_creator.
