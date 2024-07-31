@@ -1,5 +1,5 @@
 
-from crewai import Agent, Task, Crew, Process
+from crewai import Agent, Task, Crew, Process, JSONSearchTool
 from agents.base import CustomCrew
 from tools.exam import ExamTool
 
@@ -91,7 +91,7 @@ class ExamCrew(CustomCrew):
             expected_output=test_orchestrator_task_expected_output,
             agent=agent,
             #output_file="dulieu-de-thi.md",
-            tools=[ExamTool.get_chapter]
+            tools=[JSONSearchTool(json_path='./matrix.json'), ExamTool.get_chapter]
         )
 
     def _create_exam_generator_task(self, agent):
