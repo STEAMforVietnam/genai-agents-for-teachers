@@ -388,7 +388,7 @@ def generating_exam_matrix(matrix_json_obj, topic: str):
     return html_content
 
 @tool("ExamHTMLMakerTool")
-def create_exam_html_maker_tool(json_output):
+def create_exam_html_maker_tool(input: Dict) -> str:
     """
     This tool creates an html file from the JSON file
     """
@@ -642,7 +642,7 @@ def create_exam_html_maker_tool(json_output):
     print(json_output)
 
     question_sets_cleaned = {lesson.lower(): {k.lower().replace(" ", "_"): v for k, v in detail.items()}
-                             for lesson, detail in json_output.items()}
+                             for lesson, detail in input.items()}
     question_sets_cleaned_shuffled = sort_questions(question_sets_cleaned)
     question_html = exam_generation(question_sets_cleaned_shuffled)
     answer_key_html = exam_generation(question_sets_cleaned_shuffled, is_answer_key=True)
