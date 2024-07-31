@@ -686,4 +686,4 @@ def create_matrix_html_maker_tool(input: List[Dict], topic: str) -> str:
     ### Write JSON
     with open('matrix.json', 'w') as f:
         json.dump(input, f)
-    return ["./matrix.html", "./matrix.json"]
+    return "./matrix.html"
