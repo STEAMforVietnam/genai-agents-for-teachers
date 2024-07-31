@@ -4,8 +4,12 @@ from agents.base import CustomCrew
 from tools.exam import ExamTool
 
 class ExamCrew(CustomCrew):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, creator_prompt,
+                 checker_prompt=None,
+                 html_creator_prompt=None):
+        super(ExamCrew, self).__init__(
+            creator_prompt, checker_prompt,
+            html_creator_prompt)
         self.project = "TẠO_ĐỀ_BÀI_THI"
 
     def _get_crew(self):

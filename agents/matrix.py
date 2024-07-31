@@ -8,8 +8,12 @@ class MatrixCrew(CustomCrew):
     This is a CustomCrew specific for creating an Matrix file from
     Textbooks and other reference materials, such as Ministry of Education's instruction
     """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, creator_prompt,
+                 checker_prompt=None,
+                 html_creator_prompt=None):
+        super(MatrixCrew, self).__init__(
+            creator_prompt, checker_prompt, 
+            html_creator_prompt)
 
     def _get_crew(self):
         """
