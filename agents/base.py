@@ -69,7 +69,7 @@ class CustomCrew:
         """
         raise NotImplementedError
 
-    def run(self, inputs: any):
+    def run(self, inputs=None):
         result = self.crew.kickoff(inputs=inputs)
         return result
     
