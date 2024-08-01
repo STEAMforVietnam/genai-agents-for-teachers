@@ -16,6 +16,15 @@ class ExamCrew(CustomCrew):
             checker_prompt, html_creator_prompt)
         self.project = "TẠO_ĐỀ_BÀI_THI"
 
+    def _get_tools(self):
+        super()._get_tools()
+        ### ADD JSONParserTool
+        self.tools.append(JSONSearchTool('./matrix.json')) 
+
+        ### ADD HTMLMakerTool
+        self.tools.append(create_exam_html_maker_tool)
+
+
     def _get_crew(self):
         orchestrator = self._create_orchestrator_agent()
         exam_generator = self._create_exam_generator_agent()
@@ -130,8 +139,4 @@ class ExamCrew(CustomCrew):
             agent=agent,
             context=[self.exam_generator_task, self.checker_task]
         )
-
-    def run(self, inputs=None):
-        result = self.crew.kickoff(inputs=inputs)
-        return result
 

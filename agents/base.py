@@ -50,14 +50,6 @@ class CustomCrew:
         retrieval_tool = self._initialize_retrieval_tools()
         tools = retrieval_tool.get_tools()
         self.tools.append(tools[0])
-
-        ### ADD JSONParserTool
-        self.tools.append(JSONSearchTool('./matrix.json')) 
-
-        ### ADD HTMLMakerTool
-        self.tools.append(create_exam_html_maker_tool)
-        self.tools.append(create_matrix_html_maker_tool)
-
         ### ADD PDFSearchTool
 
     def _get_llm(self):

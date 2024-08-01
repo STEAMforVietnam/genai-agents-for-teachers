@@ -15,6 +15,10 @@ class MatrixCrew(CustomCrew):
         super(MatrixCrew, self).__init__(
           creator_prompt, orchestrator_prompt, 
           checker_prompt, html_creator_prompt)
+        
+    def _get_tools(self):
+        super()._get_tools()
+        self.tools.append(create_matrix_html_maker_tool)
 
     def _get_crew(self):
         """
@@ -54,7 +58,7 @@ class MatrixCrew(CustomCrew):
         matrix_creator = Agent(
             role=matrix_creator_role,
             goal=(matrix_creator_goal
-            ), # TODO: COPY HƯỚNG DẪN
+            ),
             backstory=matrix_creator_backstory,
             allow_delegation=False,
             llm=self.llm,
