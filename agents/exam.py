@@ -39,6 +39,7 @@ class ExamCrew(CustomCrew):
         return Crew(
             agents=[orchestrator, exam_generator, checker, exam_html_creator],
             tasks=[orchestrator_task, self.exam_generator_task, self.checker_task, exam_html_creator_task],
+            memory=True,
             verbose=2
         )
 
@@ -53,7 +54,7 @@ class ExamCrew(CustomCrew):
             verbose=True,
             allow_delegation=False,
             llm=self.llm,
-            tools=self.tools
+            tools=self.tools,
         )
 
     def _create_exam_generator_agent(self):
@@ -66,7 +67,8 @@ class ExamCrew(CustomCrew):
             backstory=test_creator_backstory,
             verbose=True,
             allow_delegation=False,
-            llm=self.llm
+            llm=self.llm,
+            max_iter=2
         )
 
     def _create_checker_agent(self):
@@ -79,7 +81,8 @@ class ExamCrew(CustomCrew):
             backstory=test_checker_backstory,
             verbose=True,
             allow_delegation=False,
-            llm=self.llm
+            llm=self.llm,
+            max_iter=2
         )
 
     def _create_exam_html_creator_agent(self):
@@ -93,7 +96,8 @@ class ExamCrew(CustomCrew):
             verbose=True,
             allow_delegation=False,
             tools=[create_exam_html_maker_tool],
-            llm=self.llm
+            llm=self.llm,
+            max_iter=2
         )
 
     def _create_orchestrator_task(self, agent):
@@ -104,7 +108,7 @@ class ExamCrew(CustomCrew):
             expected_output=test_orchestrator_task_expected_output,
             agent=agent,
             #output_file="dulieu-de-thi.md",
-            tools=[JSONSearchTool('./matrix.json'), ExamTool.get_chapter]
+            tools=[JSONSearchTool('./output/matrix.json'), ExamTool.get_chapter]
         )
 
     def _create_exam_generator_task(self, agent):
