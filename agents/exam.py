@@ -29,7 +29,7 @@ class ExamCrew(CustomCrew):
 
         return Crew(
             agents=[orchestrator, exam_generator, checker, exam_html_creator],
-            tasks=[orchestrator_task, exam_generator_task, checker_task, exam_html_creator_task],
+            tasks=[orchestrator_task, self.exam_generator_task, self.checker_task, exam_html_creator_task],
             verbose=2
         )
 
