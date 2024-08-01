@@ -17,6 +17,26 @@ class MatrixJSON(BaseModel):
     number_of_questions: int
     total_points: int
 
+class Question(BaseModel):
+    desc: str
+    points: float
+
+class Answer(BaseModel):
+    result: str
+    explain: str
+
+class Internal(BaseModel):
+    topic: str
+    sub_topic: str
+    knowledge_level: KnowledgeLevelEnum
+    question_type: str
+
+class QuestionJSON(BaseModel):
+    question: Question
+    answer: Answer
+    internal_stuff: Internal
+        
 class ExamJSON(BaseModel):
-    #TODO
-    pass
+    question_nbr: int
+    question_json: QuestionJSON
+    
