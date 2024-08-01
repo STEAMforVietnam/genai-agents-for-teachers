@@ -3,7 +3,7 @@ from agents.base import CustomCrew
 from tools.exam import ExamTool
 from agents.custom_tools import create_exam_html_maker_tool
 from crewai_tools.tools.json_search_tool.json_search_tool import JSONSearchTool
-from models import ExamJSON
+from .models import ExamJSON
 
 
 class ExamCrew(CustomCrew):
