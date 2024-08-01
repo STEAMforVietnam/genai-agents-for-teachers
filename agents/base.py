@@ -52,7 +52,7 @@ class CustomCrew:
         self.tools.append(tools[0])
 
         ### ADD JSONParserTool
-        #self.tools.append(JSONSearchTool()) 
+        self.tools.append(JSONSearchTool('./matrix.json')) 
 
         ### ADD HTMLMakerTool
         self.tools.append(create_exam_html_maker_tool)

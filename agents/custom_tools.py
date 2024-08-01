@@ -413,14 +413,14 @@ def create_exam_html_maker_tool(
         for item in items:
             item = list(item)
             item[0] = 'câu hỏi ' + str(index)
-            if item[1].get("thông_tin_nội_bộ_(học_sinh_không_thấy)").get("Loại câu hỏi") == "Trắc nghiệm":
+            if item[1].get("internal").get("question_type") == "Trắc nghiệm":
                 question_sets_shuffled_sorted.append(tuple(item))
                 index += 1
 
         for item in items:
             item = list(item)
             item[0] = 'câu hỏi ' + str(index)
-            if item[1].get("thông_tin_nội_bộ_(học_sinh_không_thấy)").get("Loại câu hỏi") == "Tự luận":
+            if item[1].get("internal").get("question_type") == "Tự luận":
                 question_sets_shuffled_sorted.append(tuple(item))
                 index += 1
         return dict(question_sets_shuffled_sorted)
@@ -435,7 +435,7 @@ def create_exam_html_maker_tool(
         list_of_tl = ""
 
         for key, value in question_sets.items():
-            question_items = value.get('đề_bài').get('Nội dung').replace("\\n", "\n").replace("- A.", "A.").replace("- B.", "B.").replace("- C.", "C.").replace("- D.", "D.").split('\n')
+            question_items = value.get('question').get('desc').replace("\\n", "\n").replace("- A.", "A.").replace("- B.", "B.").replace("- C.", "C.").replace("- D.", "D.").split('\n')
             answer_choices = ""
             for ans in question_items[1:]:
                 if ans:
@@ -446,7 +446,7 @@ def create_exam_html_maker_tool(
                 <article class="QuestionItem marginBottom2">
                 <h3>
                     <strong><u>Câu {key.replace('câu ', '')}</u></strong>
-                    <span>({value.get('đề_bài').get('Số điểm')} điểm): </span>
+                    <span>({value.get('question').get('points')} điểm): </span>
                     <span>{question_items[0]}</span>
 
                 </h3>
@@ -458,16 +458,16 @@ def create_exam_html_maker_tool(
                 """.replace('\x08', '\\b')
 
             if is_answer_key:
-                if value.get("thông_tin_nội_bộ_(học_sinh_không_thấy)").get("Loại câu hỏi") == "Trắc nghiệm":
-                    answer_key = fr"""<strong>Đáp Án: {value.get('đáp_án').get('Kết quả')}</strong>"""
+                if value.get("internal").get("question_type") == "Trắc nghiệm":
+                    answer_key = fr"""<strong>Đáp Án: {value.get('answer').get('result')}</strong>"""
                 else:
-                    trinh_bay = value.get('đáp_án').get('Trình bày').replace("\\n", "\n").replace(' \\\n ', ' \\\\\n ').replace(' \\\\ ', ' \\\\\n ').replace(' \\\\\ ', ' \\\\\n ').replace(' \\\ ', ' \\\\\n ')
+                    trinh_bay = value.get('answer').get('explain').replace("\\n", "\n").replace(' \\\n ', ' \\\\\n ').replace(' \\\\ ', ' \\\\\n ').replace(' \\\\\ ', ' \\\\\n ').replace(' \\\ ', ' \\\\\n ')
                     answer_key = fr"""<strong>Đáp Án:</strong>""" + fr"""{trinh_bay}</strong>"""
                 question += answer_key
 
-            if value.get("thông_tin_nội_bộ_(học_sinh_không_thấy)").get("Loại câu hỏi") == "Trắc nghiệm":
+            if value.get("internal").get("question_type") == "Trắc nghiệm":
                 list_of_questions += question
-            elif value.get("thông_tin_nội_bộ_(học_sinh_không_thấy)").get("Loại câu hỏi") == "Tự luận":
+            elif value.get("internal").get("question_type") == "Tự luận":
                 list_of_tl += question
 
         return list_of_questions, list_of_tl
@@ -652,14 +652,15 @@ def create_exam_html_maker_tool(
     question_html = exam_generation(question_sets_cleaned_shuffled)
     answer_key_html = exam_generation(question_sets_cleaned_shuffled, is_answer_key=True)
     
+    with open("./exam.json", 'w') as f:
+        json.dump(json_output, f)
+
     with open("./exam.html", "w", encoding="utf-8") as exam:
         exam.write(question_html)
 
     with open("./answer_key.html", "w", encoding="utf-8") as exam_key:
         exam_key.write(answer_key_html)
 
-    with open("./exam.json", 'w') as f:
-        json.dump(json_output, f)
     return "./exam.html"
     
 

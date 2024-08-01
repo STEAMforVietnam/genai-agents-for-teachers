@@ -95,7 +95,7 @@ class ExamCrew(CustomCrew):
             expected_output=test_orchestrator_task_expected_output,
             agent=agent,
             #output_file="dulieu-de-thi.md",
-            tools=[JSONSearchTool(), ExamTool.get_chapter]
+            tools=[JSONSearchTool('./matrix.json'), ExamTool.get_chapter]
         )
 
     def _create_exam_generator_task(self, agent):
