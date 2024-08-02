@@ -17,7 +17,8 @@ description = Với thông tin từ test_orchestrator, test_creator sẽ tạo r
     8. So sánh đáp án của Bạn với đáp án của test_creator. \n.
     9. Đối với "question_type" chỉ là "Trắc nghiệm", bắt buộc có đầy đủ 4 phương án A, B, C, D trong trường thông tin "desc" của "question". mỗi đáp án nằm trên một hàng riêng biệt, không nằm cùng hàng với câu hỏi đề bài.
     10. Nội dung đề bài câu hỏi không cần đánh số. \n
-    11. Chỉnh sửa lại $Đề_bài_và_Đáp_án nếu chưa chính xác.
-    Nếu không có gì cần phải chỉnh sửa, thì trả lại dữ liệu đầu vào $Đề_bài_và_Đáp_án như ban đầu.
+    11. Cung cấp phản hồi chi tiết về đề thi và đáp án, bao gồm cả đề xuất cải thiện nếu cần thiết. "
+    12. Trả lại đánh giá của bạn cho test_orchestrator."
+    12.1 Nếu không có gì cần phải chỉnh sửa, thì trả lại dữ liệu đầu vào $Đề_bài_và_Đáp_án như ban đầu và đánh gía Tốt cho test_orchestrator
 
-expected_output = một $Đề_bài_và_Đáp_án theo cấu trúc ExamJSON.
+expected_output = một $Đề_bài_và_Đáp_án theo cấu trúc ExamJSON

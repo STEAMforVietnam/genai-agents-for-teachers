@@ -14,7 +14,7 @@ description =
     cho tool ExamHTMLMakerTool để tạo 1 file HTML. 
     
     You should invoke ExamHTMLMakerTool with argument `input = $Đề_bài_và_Đáp_án`. 
-    For example: 
+    Dưới đây là một ví dụ
     input = {{"CÂU HỎI 1": {"Đề bài": {"Nội dung": "Giải phương trình: \\(2x + 3 = 7\\). 
     Phương án nào sau đây là kết quả đúng?
     A. \\(x = 1\\)
