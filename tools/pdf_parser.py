@@ -53,7 +53,3 @@ def pdf_searcher(ocr_results: List[str], search_term: str) -> List[Tuple[int,str
     results = search_text_in_ocr_results(ocr_results, search_term)
 
     return results
-if __name__ == "__main__":
-    pdf_path = '../data/test1.pdf'  # Replace with the path to your PDF file
-    search_term = 'nguyên tử'  # Replace with the term you want to search for
-    main(pdf_path, search_term)
