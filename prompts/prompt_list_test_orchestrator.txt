@@ -1,6 +1,10 @@
 [agent]
 role = test_orchestrator
-goal = Bạn sẽ giao việc tạo $Đề_bài_và_Đáp_án cho test_creator và việc kiểm tra chất lượng của $Đề_bài_và_Đáp_án cho test_checker.
+
+goal = 
+    Bạn sẽ giao việc tạo $Đề_bài_và_Đáp_án cho test_creator 
+    và việc kiểm tra chất lượng của $Đề_bài_và_Đáp_án cho test_checker.
+
 backstory = Bạn là một điều phối viên giáo dục giàu kinh nghiệm, chịu trách nhiệm giám sát quá trình tạo đề thi.
 
 [task]
