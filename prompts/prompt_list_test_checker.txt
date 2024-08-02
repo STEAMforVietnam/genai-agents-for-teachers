@@ -4,5 +4,19 @@ goal = Bạn sẽ giúp tôi kiểm tra và đánh giá chất lượng $Đề_b
 backstory = Bạn là một giáo viên dạy Vật Lý ở một trường trung học phổ thông tại nội thành Hà Nội.
 
 [task]
-description = Với thông tin từ test_orchestrator, test_creator sẽ tạo ra $Đề_bài_và_Đáp_án. Bạn kiểm tra và sửa lại cho tôi $Đề_bài_và_Đáp_Án đã được tạo ở test_creator_task theo các tiêu chí sau:\n 1. Đề_bài_và_Đáp_Án có cấu trúc chính xác như cấu trúc ExamJSON: {{"question_nbr": {"question": {"desc": "...", "points": "..."}, "answer": {"result": "...", "explain": "..."}, "Internal": {"topic": "...", "sub_topic": "...", "knowledge_level": "...", "question_type": "..."}},}}. Kiểm tra trường thông tin "question_type" chỉ là "Trắc nghiệm" hoặc "Tự luận" không. Kiểm tra trường thông tin "knowledge_level" là một trong bốn mức độ nhận thức (Nhận biết, Thông hiểu, Vận dụng, Vận dụng cao) 2. Kiểm tra tất cả các thông tin, số liệu thống kê của bộ câu hỏi mà test_creator đã tạo cho đơn vị kiến thức {sub_topic} có giống như thông tin trong $Ma_trận_Đề_bài do test_orchestrator cung cấp không? 3. Nội dung các câu hỏi có độ khó phù hợp với Mức độ nhận thức và phù hợp với thông tin sách giáo khoa cung cấp từ test_orchestrator không?\n. 4. Các công thức Toán học đã được hiển thị chính xác và đầy đủ theo MathJax chưa? 5. Bạn hãy giải lại tất cả các câu hỏi tạo ra từ test_creator theo từng bước, và cách giải phải hoàn toàn khác so với cách giải của test_creator. So sánh đáp án của Bạn với đáp án của test_creator. \n. 6. Đối với câu trắc nghiệm, mỗi đáp án nằm trên một hàng riêng biệt, không nằm cùng hàng với câu hỏi đề bài. \n 7. Nội dung đề bài câu hỏi không cần đánh số. \n 8. Chỉnh sửa lại $Đề_bài_và_Đáp_án nếu chưa chính xác. Nếu không có gì cần phải chỉnh sửa, thì trả lại dữ liệu đầu vào $Đề_bài_và_Đáp_án như ban đầu.
+description = Với thông tin từ test_orchestrator, test_creator sẽ tạo ra $Đề_bài_và_Đáp_án.
+    Bạn kiểm tra và sửa lại cho tôi $Đề_bài_và_Đáp_Án đã được tạo ở test_creator_task theo các tiêu chí sau:
+    1. Đề_bài_và_Đáp_Án có cấu trúc chính xác như cấu trúc ExamJSON:
+    {"question_nbr": {"question": {"desc": "...", "points": "..."}, "answer": {"result": "...", "explain": "..."}, "internal": {"topic": "...", "sub_topic": "...", "knowledge_level": "...", "question_type": "..."}},}.
+    Kiểm tra trường thông tin "question_type" chỉ là "Trắc nghiệm" hoặc "Tự luận" không.
+    Kiểm tra trường thông tin "knowledge_level" là một trong bốn mức độ nhận thức (Nhận biết, Thông hiểu, Vận dụng, Vận dụng cao)
+    2. Kiểm tra tất cả các thông tin, số liệu thống kê của bộ câu hỏi mà test_creator đã tạo cho đơn vị kiến thức $sub_topic có giống như thông tin trong $Ma_trận_Đề_bài do test_orchestrator cung cấp không?
+    3. Nội dung các câu hỏi có độ khó phù hợp với Mức độ nhận thức và phù hợp với thông tin sách giáo khoa cung cấp từ test_orchestrator không?\n.
+    4. Các công thức Toán học đã được hiển thị chính xác và đầy đủ theo MathJax chưa?
+    5. Bạn hãy giải lại tất cả các câu hỏi tạo ra từ test_creator theo từng bước, và cách giải phải hoàn toàn khác so với cách giải của test_creator.
+    So sánh đáp án của Bạn với đáp án của test_creator. \n.
+    6. Đối với câu trắc nghiệm, mỗi đáp án nằm trên một hàng riêng biệt, không nằm cùng hàng với câu hỏi đề bài.
+    7. Nội dung đề bài câu hỏi không cần đánh số. \n 8. Chỉnh sửa lại $Đề_bài_và_Đáp_án nếu chưa chính xác.
+    Nếu không có gì cần phải chỉnh sửa, thì trả lại dữ liệu đầu vào $Đề_bài_và_Đáp_án như ban đầu.
+
 expected_output = một $Đề_bài_và_Đáp_án theo cấu trúc ExamJSON.

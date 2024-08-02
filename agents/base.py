@@ -14,11 +14,17 @@ from tools.retrieval import RetrievalTools, RetrievalConfig
 MODEL_NAME='bkai-foundation-models/vietnamese-bi-encoder'
 COLLECTION_NAME = 's4v_python_oh_bkai'
 
+collections = {
+    "sinh": "s4v_python_oh_bkai_bio",
+    "vật_lý": 's4v_python_oh_bkai'
+}
 class CustomCrew:
     def __init__(self, creator_prompt,
                  orchestrator_prompt=None,
                  checker_prompt=None,
-                 html_creator_prompt=None):
+                 html_creator_prompt=None,
+                 mon_hoc="vật_lý",):
+        self.mon_hoc: str = mon_hoc
         self.file_path: str = "."
         self.tools: List[Tool] = []
         self.llm = ChatOpenAI(
@@ -34,7 +40,7 @@ class CustomCrew:
     def _initialize_retrieval_tools(self) -> RetrievalTools:
         retrieval_config = RetrievalConfig(
             embedding_model=MODEL_NAME,
-            milvus_collection=COLLECTION_NAME,
+            milvus_collection=collections[self.mon_hoc],
             milvus_connection_args={"uri": os.environ.get("DATABSE_PUBLIC_ENDPOINT"),
                             "token": os.environ.get("DATABASE_API_KEY"),
                             "secure": True

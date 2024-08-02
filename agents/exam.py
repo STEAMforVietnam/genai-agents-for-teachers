@@ -1,8 +1,10 @@
+import json
 from crewai import Agent, Task, Crew, Process
 from agents.base import CustomCrew
 from tools.exam import ExamTool
 from agents.custom_tools import create_exam_html_maker_tool
 from crewai_tools.tools.json_search_tool.json_search_tool import JSONSearchTool
+from crewai_tools.tools.file_read_tool.file_read_tool import FileReadTool
 from .models import ExamJSON
 
 
@@ -19,7 +21,7 @@ class ExamCrew(CustomCrew):
     def _get_tools(self):
         super()._get_tools()
         ### ADD JSONParserTool
-        self.tools.append(JSONSearchTool('./matrix.json')) 
+        self.tools.append(JSONSearchTool('./output/matrix.json')) 
 
         ### ADD HTMLMakerTool
         self.tools.append(create_exam_html_maker_tool)
@@ -31,14 +33,14 @@ class ExamCrew(CustomCrew):
         checker = self._create_checker_agent()
         exam_html_creator = self._create_exam_html_creator_agent()
 
-        orchestrator_task = self._create_orchestrator_task(orchestrator)
+        self.orchestrator_task = self._create_orchestrator_task(orchestrator)
         self.exam_generator_task = self._create_exam_generator_task(exam_generator)
         self.checker_task = self._create_checker_task(checker)
         exam_html_creator_task = self._create_exam_html_creator_task(exam_html_creator)
 
         return Crew(
             agents=[orchestrator, exam_generator, checker, exam_html_creator],
-            tasks=[orchestrator_task, self.exam_generator_task, self.checker_task, exam_html_creator_task],
+            tasks=[self.orchestrator_task, self.exam_generator_task, self.checker_task, exam_html_creator_task],
             memory=True,
             verbose=2
         )
@@ -54,7 +56,7 @@ class ExamCrew(CustomCrew):
             verbose=True,
             allow_delegation=False,
             llm=self.llm,
-            tools=self.tools,
+            max_iter=4
         )
 
     def _create_exam_generator_agent(self):
@@ -107,8 +109,8 @@ class ExamCrew(CustomCrew):
             description=(test_orchestrator_task_description),
             expected_output=test_orchestrator_task_expected_output,
             agent=agent,
-            #output_file="dulieu-de-thi.md",
-            tools=[JSONSearchTool('./output/matrix.json'), ExamTool.get_chapter]
+            output_file="dulieu-de-thi.md",
+            tools=[FileReadTool('./output/matrix.json')]
         )
 
     def _create_exam_generator_task(self, agent):
@@ -117,9 +119,11 @@ class ExamCrew(CustomCrew):
         return Task(
             description=(test_creator_task_description),
             expected_output=test_creator_task_expected_output,
-            #output_file="de-thi.md, dap-an.md",
-            output_json=ExamJSON,
-            agent=agent
+            output_file="de-thi.md, dap-an.md",
+            # output_json=ExamJSON,
+            agent=agent,
+            tools=[ExamTool.get_chapter],
+            context=[self.orchestrator_task]
         )
 
     def _create_checker_task(self, agent):
@@ -130,7 +134,7 @@ class ExamCrew(CustomCrew):
             expected_output=test_checker_task_expected_output,
             #output_file="danh-gia.md",
             agent=agent,
-            context=[self.exam_generator_task]
+            context=[self.orchestrator_task]
         )
 
     def _create_exam_html_creator_task(self, agent):
@@ -141,6 +145,13 @@ class ExamCrew(CustomCrew):
             expected_output=test_html_creator_task_expected_output,
             #output_file="de-thi.md, dap-an.md",
             agent=agent,
-            context=[self.exam_generator_task, self.checker_task]
+            # context=[self.exam_generator_task, self.checker_task]
         )
 
+    def run(self, inputs=None):
+        
+        with open("./output/matrix.json", "r", encoding="utf-8") as file:
+            matrix = json.load(file)
+        inputs = {"ma_tran_de_bai": matrix}
+        return super().run()
+        

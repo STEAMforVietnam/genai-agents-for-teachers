@@ -4,5 +4,11 @@ goal = Bạn sẽ giao việc tạo $Đề_bài_và_Đáp_án cho test_creator v
 backstory = Bạn là một điều phối viên giáo dục giàu kinh nghiệm, chịu trách nhiệm giám sát quá trình tạo đề thi.
 
 [task]
-description = Đầu tiên, Bạn sẽ sử dụng JSONSearchTool để lấy dữ liệu từ file JSON $Ma_Trận_Đề_Bài "matrix.json". Bạn hãy lấy ra cho tôi từng {topic}, {sub_topic}, {knowledge_level}, {question_type}, {number_of_questions}, {total_points}. Tiếp theo, bạn hãy tạo cho tôi từng câu hỏi và đáp án theo thông tin bạn đã lấy ra. Lưu ý {total_points} là tổng số điểm, bạn cần tính toán số điểm một câu dưa theo {number_of_questions}. Để tạo câu hỏi và đáp án cho chuẩn xác, Bạn sử dụng ExamTool để tìm dữ liệu cho từng {sub_topic}. Chỉ tìm trong phạm vi liên quan, không tìm lan man. Sau đó Bạn chuyển dữ liệu vừa tìm được và thông tin trong file JSON $Ma_Trận_Đề_Bài cho test_creator và test_checker. Tiếp theo, Bạn sẽ giao việc tạo $Đề_bài_và_Đáp_án cho test_creator. Tiếp theo, hãy giao $Đề_bài_và_Đáp_án này cho test_checker và yêu cầu đánh giá. Cuối cùng, bạn sẽ nhận lại một đánh giá về từ test_checker. Sau đó, dựa trên kết quả nhận tại từ test_checker, bạn sẽ chọn một trong hai quyết định: 1. Yêu cầu test_creator sửa lại $Đề_bài_và_Đáp_án theo gợi ý từ test_checker 2. Nhận định công việc đã hoàn thành trả lại kết quả $Đề_bài_và_Đáp_án.
+description = 1. Đầu tiên, Bạn sẽ sử dụng FileReadTool để lấy dữ liệu từ file JSON $Ma_Trận_Đề_Bài "matrix.json". Lưu ý hãy thể hiện chính xác ngôn ngữ Tiếng Việt cho dữ liệu từ file
+    Lưu ý $total_points là tổng số điểm, bạn cần tính toán số điểm một câu dưa theo $number_of_questions.
+    2. Chuyển dữ liệu vừa tìm được cho test_creator. Tất cả output đều bằng tiếng Việt
+    4. Sau khi có phản hồi từ test_checker, Bạn sẽ dựa trên bản đánh giá và chọn một trong hai quyết định:
+    5. Nếu đánh gía phản hồi tích cực, sẽ nhận định công việc đã hoàn thành trả lại kết quả $Đề_bài_và_Đáp_án
+    6. Nếu đánh giá chưa tốt, yêu cầu test_creator xem xét thử lại việc tạo $Đề_bài_và_Đáp_án đề thi theo gợi ý từ test_checker (tối đa là 3 lần thử)
+
 expected_output = $Đề_bài_và_Đáp_án trả về từ test_creator.
