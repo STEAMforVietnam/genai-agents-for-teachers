@@ -56,7 +56,7 @@ class ExamCrew(CustomCrew):
             verbose=True,
             allow_delegation=False,
             llm=self.llm,
-            max_iter=4
+            max_iter=5
         )
 
     def _create_exam_generator_agent(self):
@@ -70,7 +70,7 @@ class ExamCrew(CustomCrew):
             verbose=True,
             allow_delegation=False,
             llm=self.llm,
-            max_iter=2
+            max_iter=10
         )
 
     def _create_checker_agent(self):
@@ -84,7 +84,7 @@ class ExamCrew(CustomCrew):
             verbose=True,
             allow_delegation=False,
             llm=self.llm,
-            max_iter=2
+            max_iter=5
         )
 
     def _create_exam_html_creator_agent(self):

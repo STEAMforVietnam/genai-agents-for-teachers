@@ -130,7 +130,7 @@ class MatrixCrew(CustomCrew):
             expected_output=(matrix_html_creator_task_expected_output),
             # output_file="matrix.html"
             agent=html_creator,
-            context=[matrix_creator_task, matrix_checker_task],
+            # context=[matrix_creator_task, matrix_checker_task],
             
         )
 
@@ -139,7 +139,7 @@ class MatrixCrew(CustomCrew):
                 agents=[matrix_orchestrator, matrix_creator, matrix_checker, html_creator],
                 tasks=[matrix_orchestrator_task, matrix_creator_task, matrix_checker_task, html_task],
                 # manager_agent=orchestrator,
-                memory=True,
+                # memory=True,
                 # process=Process.hierarchical,
-                verbose=1
+                verbose=2
             )
