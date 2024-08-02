@@ -19,7 +19,7 @@ collections = {
     "vật_lý": 's4v_python_oh_bkai'
 }
 class CustomCrew:
-    def __init__(self, creator_prompt,
+    def __init__(self, creator_prompt=None,
                  orchestrator_prompt=None,
                  checker_prompt=None,
                  html_creator_prompt=None,
