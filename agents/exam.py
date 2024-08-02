@@ -44,7 +44,8 @@ class ExamCrew(CustomCrew):
             agents=[orchestrator, exam_generator, checker, exam_html_creator],
             tasks=[self.orchestrator_task, self.exam_generator_task, self.checker_task, exam_html_creator_task],
             memory=True,
-            verbose=2
+            verbose=2,
+            planning=True
         )
 
     def _create_orchestrator_agent(self):
@@ -121,7 +122,7 @@ class ExamCrew(CustomCrew):
         return Task(
             description=(test_creator_task_description),
             expected_output=test_creator_task_expected_output,
-            output_file="de-thi.md, dap-an.md",
+            output_file="./outputs/de-thi.md, dap-an.md",
             # output_json=ExamJSON,
             agent=agent,
             tools=[ExamTool.get_chapter],
@@ -134,7 +135,7 @@ class ExamCrew(CustomCrew):
         return Task(
             description=(test_checker_task_description),
             expected_output=test_checker_task_expected_output,
-            #output_file="danh-gia.md",
+            output_file="./outputs/danh-gia.md",
             agent=agent,
             context=[self.orchestrator_task]
         )
