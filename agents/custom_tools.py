@@ -652,16 +652,16 @@ def create_exam_html_maker_tool(
     question_html = exam_generation(question_sets_cleaned_shuffled)
     answer_key_html = exam_generation(question_sets_cleaned_shuffled, is_answer_key=True)
     
-    with open("./output/exam.json", 'w', encoding='utf8') as f:
+    with open("./outputs/exam.json", 'w', encoding='utf8') as f:
         json.dump(json_output, f, ensure_ascii=False)
 
-    with open("./output/exam.html", "w", encoding="utf-8") as exam:
+    with open("./outputs/exam.html", "w", encoding="utf-8") as exam:
         exam.write(question_html)
 
-    with open("./output/answer_key.html", "w", encoding="utf-8") as exam_key:
+    with open("./outputs/answer_key.html", "w", encoding="utf-8") as exam_key:
         exam_key.write(answer_key_html)
 
-    return "./output/exam.html"
+    return "./outputs/exam.html"
     
 
 @tool("MatrixHTMLMakerTool")
@@ -689,10 +689,10 @@ def create_matrix_html_maker_tool(input: List[Dict], topic: str) -> str:
 
     ### Write HTML
     html_content = generating_exam_matrix(input, topic)
-    with open("./output/matrix.html", "w") as matrix:
+    with open("./outputs/matrix.html", "w") as matrix:
         matrix.write(html_content)
 
     ### Write JSON
-    with open('output/matrix.json', 'w', encoding='utf8') as f:
+    with open('./outputs/matrix.json', 'w', encoding='utf8') as f:
         json.dump(input, f, ensure_ascii=False)
-    return "./output/matrix.html"
+    return "./outputs/matrix.html"
