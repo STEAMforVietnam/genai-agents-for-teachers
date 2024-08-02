@@ -15,7 +15,7 @@ description = Với thông tin từ test_orchestrator, test_creator sẽ tạo r
     6. Các công thức Toán học đã được hiển thị chính xác và đầy đủ theo MathJax chưa?
     7. Bạn hãy giải lại tất cả các câu hỏi tạo ra từ test_creator theo từng bước, và cách giải phải hoàn toàn khác so với cách giải của test_creator.
     8. So sánh đáp án của Bạn với đáp án của test_creator. \n.
-    9. Đối với "question_type" chỉ là "Trắc nghiệm", cần có đầy đủ 4 phương án A, B, C, D. mỗi đáp án nằm trên một hàng riêng biệt, không nằm cùng hàng với câu hỏi đề bài.
+    9. Đối với "question_type" chỉ là "Trắc nghiệm", bắt buộc có đầy đủ 4 phương án A, B, C, D trong trường thông tin "desc" của "question". mỗi đáp án nằm trên một hàng riêng biệt, không nằm cùng hàng với câu hỏi đề bài.
     10. Nội dung đề bài câu hỏi không cần đánh số. \n
     11. Chỉnh sửa lại $Đề_bài_và_Đáp_án nếu chưa chính xác.
     Nếu không có gì cần phải chỉnh sửa, thì trả lại dữ liệu đầu vào $Đề_bài_và_Đáp_án như ban đầu.

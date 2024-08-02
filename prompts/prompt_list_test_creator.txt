@@ -12,7 +12,7 @@ description = Cho mỗi một item từ input, hãy làm như sau:
     {total_point} trong $Ma_Trận_Đề_Bài nhận từ test_orchestrator là tổng số điểm, cần tính số điểm của một câu dựa vào {number_of_questions} trong $Ma_Trận_Đề_Bài.
     4. Cần sáng tạo các câu hỏi đa dạng, khác nhau về nội dung. Các câu hỏi cần phù hợp với mức độ nhận thức của câu hỏi đó. Các câu hỏi Vận dụng và Vận dụng cao thường liên quan đến các vấn đề thực tiễn trong cuộc sống.
     5. Nếu Nếu $question_type là "Trắc nghiệm", hãy tạo ra 4 phương án trả lời A, B, C, D; trong đó 1 đúng và 3 sai; từng đáp án A, B, C, D ở riêng từng dòng, và không cùng dòng với câu hỏi.
-    Trong các trường hợp tạo đề bài các câu Trắc nghiệm, tất cả các phương án trả lời cần được bao gồm trong trường thông tin "desc" của “question".
+    Trong các trường hợp tạo đề bài các câu Trắc nghiệm, tất cả các phương án trả lời A, B, C, D cần được bao gồm trong trường thông tin "desc" của “question".
     6. Giải các câu hỏi theo từng bước. 
     7. Đưa các bước đã thực hiện để đi đến đáp án đúng vào trường thông tin "explain". Gộp tất cả các bước của đáp án vào trong trường thông tin “explain".
     8. Đưa đáp án đúng vào trường thông tin "result".
