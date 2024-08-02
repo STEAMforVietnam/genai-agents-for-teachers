@@ -4,21 +4,19 @@ goal = Bạn sẽ giúp tôi tạo $Ma_Trận_Đề_Bài cho học sinh trong m�
 backstory = Bạn là một giáo viên dạy Vật Lý ở một trường trung học phổ thông tại nội thành Hà Nội.
 
 [task]
-description = Tạo Ma_Trận_Đề_Bài Kiểm tra phù hợp với các Chương và Bài học trong Sách Giáo khoa Vật Lý Lớp 10 của Nhà xuất bản Giáo dục Việt Nam thoả mãn các bước sau: 
-    1. Hãy dùng tool LessonRetrieverTool để tìm các tên các chương và bài học trích từ trích từ file mục_lục.pdf. 
-    2. Lập các Ma_Trận_Đề_Bài Kiểm tra theo một cấu trúc dữ liệu MatrixJSON: \n[{{'topic': '...', 'sub_topic': '...', 'knowledge_level': '...', 'question_type': '...', 'number_of_questions': '...', 'total_points': '...'}}]\n. 
-    3. Tất cả các output bằng tiếng Việt. 
-    4. Nội dung trường thông tin 'knowledge_level' là một trong 4 giá trị: 'Nhận biết', 'Thông hiểu', 'Vận dụng' hoặc 'Vận dụng cao' - thể hiện mức hiểu kiến thức từ thấp tới cao. Dưới đây là các định nghĩa cho từng giá trị: 
-    4.1 Mức độ 'Nhận biết' thường được dùng cho các câu hỏi Trắc nghiệm đơn giản, có 2 câu trả lời ĐÚNG vs. SAI 
-    4.2 Mức độ 'Thông hiểu' thường được dùng cho các câu hỏi Trắc nghiệm khó hơn, có 4 phương án trả lời trong đó có 1 phương án đúng 
-    4.3 Các mức độ 'Vận dụng' và 'Vận dụng cao' thường được dùng cho các câu hỏi Tự luận. 
-    5. Nội dung trường thông tin 'question_type' là một trong 2 giá trị: 'Trắc nghiệm' hoặc 'Tự luận'. 
-    6. Nội dung trường thông tin 'Số câu hỏi' là một số nguyên từ 1 tới 2. 
-    7. Nội dung trường thông tin 'Tổng số điểm' là một số nguyên từ 1 tới 10. 
-    8. Các bài ở knowledge_level 'Nhận biết' có tổng số điểm bằng 40, và mỗi bài ở mức này tương đương với 4 điểm. 
-    9. Các bài ở knowledge_level 'Thông hiểu' có tổng số điểm bằng 30, và mỗi bài ở mức này tương đương với 5 điểm. 
-    10. Các bài ở knowledge_level 'Vận dụng' có tổng số điểm bằng 20, và mỗi bài ở mức này tương đương với 5 điểm. 
-    11. Các bài ở knowledge_level 'Vận dụng cao' có tổng số điểm bằng 10, và mỗi bài ở mức này tương đương với 10 điểm. 
-    12. Tất cả nội dung được tạo ra bằng Tiếng Việt, sử dụng utf8. 
+description = Tạo Ma_Trận_Đề_Bài Kiểm tra phù hợp với các Chương và Bài học trong Sách Giáo khoa Vật Lý Lớp 10 của Nhà xuất bản Giáo dục Việt Nam thoả mãn các bước sau:
+    1. Hãy dùng tool LessonRetrieverTool để tìm các tên các chương và bài học trích từ trích từ file mục_lục.pdf.
+    2. Lập các Ma_Trận_Đề_Bài Kiểm tra theo một cấu trúc dữ liệu MatrixJSON: \n[{{'topic': '...', 'sub_topic': '...', 'knowledge_level': '...', 'question_type': '...', 'number_of_questions': '...', 'total_points': '...'}}]
+    3. Tất cả các output bằng tiếng Việt. 4. Nội dung trường thông tin 'knowledge_level' là một trong 4 giá trị: 'Nhận biết', 'Thông hiểu', 'Vận dụng' hoặc 'Vận dụng cao' - thể hiện mức hiểu kiến thức từ thấp tới cao. Dưới đây là các định nghĩa cho từng giá trị:
+    4.1 Mức độ 'Nhận biết' thường được dùng cho các câu hỏi Trắc nghiệm đơn giản, có 2 câu trả lời ĐÚNG vs. SAI
+    4.2 Mức độ 'Thông hiểu' thường được dùng cho các câu hỏi Trắc nghiệm khó hơn, có 4 phương án trả lời trong đó có 1 phương án đúng
+    4.3 Các mức độ 'Vận dụng' và 'Vận dụng cao' thường được dùng cho các câu hỏi Tự luận.
+    5. Nội dung trường thông tin 'question_type' là một trong 2 giá trị: 'Trắc nghiệm' hoặc 'Tự luận'. 6. Nội dung trường thông tin 'Số câu hỏi' là một số nguyên từ 1 tới 2.
+    7. Nội dung trường thông tin 'Tổng số điểm' là một số nguyên từ 1 tới 10.
+    8. Các bài ở knowledge_level 'Nhận biết' có tổng số điểm bằng 40, và mỗi bài ở mức này tương đương với 4 điểm.
+    9. Các bài ở knowledge_level 'Thông hiểu' có tổng số điểm bằng 30, và mỗi bài ở mức này tương đương với 5 điểm.
+    10. Các bài ở knowledge_level 'Vận dụng' có tổng số điểm bằng 20, và mỗi bài ở mức này tương đương với 5 điểm.
+    11. Các bài ở knowledge_level 'Vận dụng cao' có tổng số điểm bằng 10, và mỗi bài ở mức này tương đương với 10 điểm.
+    12. Tất cả nội dung được tạo ra bằng Tiếng Việt, sử dụng utf8.
     13. Sau khi tạo xong $Ma_trận_Đề_bài hãy chuyển cho matrix_checker.
 expected_output = Một $Ma_Trận_Đề_Bài theo cấu trúc JSON nêu trên.
