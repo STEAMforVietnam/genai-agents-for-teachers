@@ -2,16 +2,18 @@ from crewai import Agent, Crew, Task
 from agents.base import CustomCrew
 from agents.models import MatrixJSON
 from agents.custom_tools import create_matrix_html_maker_tool
+from agents.prompt_list import PromptList
 
 class MatrixCrew(CustomCrew):
     """
     This is a CustomCrew specific for creating an Matrix file from
     Textbooks and other reference materials, such as Ministry of Education's instruction
     """
-    def __init__(self, creator_prompt,
-                 orchestrator_prompt=None,
-                 checker_prompt=None,
-                 html_creator_prompt=None):
+    def __init__(self, 
+                 creator_prompt=PromptList('./prompts/prompt_list_matrix_creator.txt'),
+                 orchestrator_prompt=PromptList('./prompts/prompt_list_matrix_orchestrator.txt'),
+                 checker_prompt=PromptList('./prompts/prompt_list_matrix_checker.txt'),
+                 html_creator_prompt=PromptList('./prompts/prompt_list_matrix_html_creator.txt')):
         super(MatrixCrew, self).__init__(
           creator_prompt, orchestrator_prompt, 
           checker_prompt, html_creator_prompt)

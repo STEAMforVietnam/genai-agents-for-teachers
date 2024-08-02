@@ -6,13 +6,15 @@ from agents.custom_tools import create_exam_html_maker_tool
 from crewai_tools.tools.json_search_tool.json_search_tool import JSONSearchTool
 from crewai_tools.tools.file_read_tool.file_read_tool import FileReadTool
 from .models import ExamJSON
+from agents.prompt_list import PromptList
 
 
 class ExamCrew(CustomCrew):
-    def __init__(self, creator_prompt,
-                 orchestrator_prompt=None,
-                 checker_prompt=None,
-                 html_creator_prompt=None):
+    def __init__(self, 
+                 creator_prompt=PromptList('./prompts/prompt_list_test_creator.txt'),
+                 orchestrator_prompt=PromptList('./prompts/prompt_list_test_orchestrator.txt'),
+                 checker_prompt=PromptList('./prompts/prompt_list_test_checker.txt'),
+                 html_creator_prompt=PromptList('./prompts/prompt_list_test_html_creator.txt')):
         super(ExamCrew, self).__init__(
             creator_prompt, orchestrator_prompt,
             checker_prompt, html_creator_prompt)
