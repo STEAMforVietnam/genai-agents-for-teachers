@@ -21,7 +21,7 @@ class ExamCrew(CustomCrew):
     def _get_tools(self):
         super()._get_tools()
         ### ADD JSONParserTool
-        self.tools.append(JSONSearchTool('./output/matrix.json')) 
+        self.tools.append(JSONSearchTool('./outputs/matrix.json')) 
 
         ### ADD HTMLMakerTool
         self.tools.append(create_exam_html_maker_tool)
@@ -110,7 +110,7 @@ class ExamCrew(CustomCrew):
             expected_output=test_orchestrator_task_expected_output,
             agent=agent,
             output_file="dulieu-de-thi.md",
-            tools=[FileReadTool('./output/matrix.json')]
+            tools=[FileReadTool('./outputs/matrix.json')]
         )
 
     def _create_exam_generator_task(self, agent):
@@ -150,7 +150,7 @@ class ExamCrew(CustomCrew):
 
     def run(self, inputs=None):
         
-        with open("./output/matrix.json", "r", encoding="utf-8") as file:
+        with open("./outputs/matrix.json", "r", encoding="utf-8") as file:
             matrix = json.load(file)
         inputs = {"ma_tran_de_bai": matrix}
         return super().run()
