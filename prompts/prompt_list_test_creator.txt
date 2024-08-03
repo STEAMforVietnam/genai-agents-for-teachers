@@ -15,7 +15,7 @@ description = 1. Nhận thông tin $ma_tran_de_bai = {ma_tran_de_bai} nội dung
               {{{{"question_nbr": {{"question": {{"desc": "...", "points": "..."}}, "answer": {{"result": "...", "explain": "..."}}, "internal": {{"topic": "...", "sub_topic": "...", "knowledge_level": "...", "question_type": "..."}}}},}}}}.\n
               7. Trong $Đề_bài_và_Đáp_án, trường thông tin "question" (bao gồm trường thông tin "desc" và "points") và trường thông tin "Internal"; 
               và với nội dung phù hợp với dữ liệu tìm được ở bước 1. 
-              Trường thông tin "desc" là nội dung đề bài đã tạo ra ở bước 2. Nội dung đề bài không đánh số .\n 
+              Trường thông tin "desc" là nội dung đề bài đã tạo ra ở bước 2. Lưu ý: Nội dung đề bài không đánh số thứ tự.\n 
               Trường thông tin "points" là số điểm của từng câu hỏi đã tạo ra ở bước 2.\n
               8. Các câu hỏi Vận dụng và Vận dụng cao thường liên quan đến các vấn đề thực tiễn trong cuộc sống. \n
               9. Nếu "question_type" trong $ma_tran_de_bai là "Trắc nghiệm", 

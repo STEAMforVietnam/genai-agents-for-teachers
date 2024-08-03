@@ -17,28 +17,26 @@ description =   1. Nhận $Đề_bài_và_Đáp_án đã tạo từ test_creator
                 7.1 So sánh đáp án của Bạn với đáp án của test_creator. \n.
                 8. Đối với "question_type" chỉ là "Trắc nghiệm", cần có đầy đủ 4 phương án A, B, C, D. mỗi đáp án nằm trên một hàng riêng biệt, không nằm cùng hàng với câu hỏi đề bài.
                 9. Hãy tính tổng các giá trị của "number_of_questions" của {ma_tran_de_bai}. Đây chính là số lượng câu hỏi cần tạo. 
-                9.1 Hãy đếm tổng số lượng câu hỏi đã tạo. Câu hỏi đã tạo là thông tin đề thi và đáp án bạn nhận được từ test_creator. 
+                9.1 Hãy đếm tổng số items của $Đề_bài_và_Đáp_án. Câu hỏi đã tạo là thông tin $Đề_bài_và_Đáp_án bạn nhận được từ test_creator. 
                 9.2 So sánh số tính ở (9.1) và (9.)
-                9.3 Nếu số tính ở (9.1) không bằng ở (9.), Gửi yêu cầu tạo lại đề thi cho test_orchestrator.\n 
                 10. Hãy tính tổng các giá trị của "total_points" của {ma_tran_de_bai}. Đây chính là số lượng điểm cần tạo.
-                10.1 Hãy tính tổng số điểm của tất cả các câu hỏi đã tạo. Câu hỏi đã tạo là thông tin đề thi và đáp án bạn nhận được từ test_creator. 
+                10.1 Hãy tính tổng các giá trị của "points" của $Đề_bài_và_Đáp_án. Câu hỏi đã tạo là thông tin $Đề_bài_và_Đáp_án bạn nhận được từ test_creator. 
                 10.2 So sánh số tính ở (10.1) và (10.)
-                10.1 Nếu số tính ở (10.1) không bằng ở (10.), Gửi yêu cầu tạo lại đề thi cho test_orchestrator.\n
                 11. Tổng số câu hỏi đã tạo ở từng sub_topic có giống so với thông tin trong {ma_tran_de_bai} không. \n
                 12. Tổng số câu hỏi đã tạo ở từng knowledge_level có giống so với thông tin trong {ma_tran_de_bai} không. \n
-                13. Hãy đếm tổng số lượng câu hỏi có "question_type" là "Trắc nghiệm" trong {ma_tran_de_bai} 
-                13.1 Hãy đếm tổng số lượng câu trắc nghiệm đã tạo.
+                13. Hãy đếm tổng số lượng câu hỏi có "question_type" là "Trắc nghiệm" trong {ma_tran_de_bai}. Đây chính là số lượng câu hỏi trắc nghiệm cần tạo.  
+                13.1 Hãy đếm tổng số lượng câu trắc nghiệm đã tạo. Câu hỏi đã tạo là thông tin $Đề_bài_và_Đáp_án bạn nhận được từ test_creator.
                 13.2 So sánh số tính ở (13.1) và (13.)
-                13.3 Nếu số tính ở (13.1) không bằng ở (13.), Gửi yêu cầu tạo lại đề thi cho test_orchestrator.\n
-                14. Hãy đếm tổng số lượng câu hỏi có "question_type" là "Tự luận" trong {ma_tran_de_bai} 
-                14.1 Hãy đếm tổng số lượng câu tự luận đã tạo.
+                14. Hãy đếm tổng số lượng câu hỏi có "question_type" là "Tự luận" trong {ma_tran_de_bai}. Đây chính là số lượng câu hỏi tự luận cần tạo. 
+                14.1 Hãy đếm tổng số lượng câu tự luận đã tạo. Câu hỏi đã tạo là thông tin $Đề_bài_và_Đáp_án bạn nhận được từ test_creator.
                 14.2 So sánh số tính ở (14.1) và (14.)
-                14.3 Nếu số tính ở (14.1) không bằng ở (14.), Gửi yêu cầu tạo lại đề thi cho test_orchestrator.\n
                 
                 15. Cung cấp phản hồi chi tiết về đề thi và đáp án, bao gồm cả đề xuất cải thiện nếu cần thiết.
                 16. Trả lại đánh giá của bạn cho test_orchestrator.\n
                 17. Hãy sử dụng phản hồi chi tiết của bạn, bạn hãy chỉnh sửa lại $Đề_bài_và_Đáp_án.
                 Lưu ý: Số lượng cần tuân thủ với thông tin từ {ma_tran_de_bai}.
-                18. Tất cả output đều bằng tiếng Việt.
+                18. Kiểm tra lại một lần nữa $Đề_bài_và_Đáp_án đã được chỉnh lại theo phản hồi chi tiết của bạn chưa?
+                19. Chuyển $Đề_bài_và_Đáp_án cho test_html_creator. 
+                20. Tất cả output đều bằng tiếng Việt.
 
 expected_output = Một bản đánh giá chi tiết việc tạo đề thi
