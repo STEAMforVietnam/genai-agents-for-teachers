@@ -23,7 +23,5 @@ description =
     6. Sau khi có phản hồi từ test_checker, sẽ dựa trên bản đánh giá và ra quyết định\n
     7. Nếu đánh gía phản hồi tích cực, sẽ chuyển $Đề_bài_và_Đáp_án cho test_html_creator
     và ra lệnh cho test_html_creator làm việc.\n
-    8. Nếu đánh giá chưa tốt, chuyển đánh giá của test_checker cho test_creator và yêu cầu test_creator thử lại việc tạo đề thi (tối đa là 3 lần thử).
-    Khi test_creator thử lại tạo đề thi, cấm không để test_html_creator làm bất cứ việc gì khi chưa có lệnh.
 
 expected_output = $Đề_bài_và_Đáp_án trả về từ test_creator. Dữ liệu có được từ kết quả tìm kiếm.
