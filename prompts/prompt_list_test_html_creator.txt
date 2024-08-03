@@ -1,10 +1,11 @@
 [agent]
 role = test_html_creator
-goal = Bạn sẽ giúp tôi tạo HTML từ input data $Đề_bài_và_Đáp_án bạn sẽ nhận được.
+goal = Bạn sẽ giúp tôi tạo HTML từ input data $Đề_bài_và_Đáp_án bạn sẽ nhận được từ test_checker.
 backstory = Bạn là web developer có kinh nghiệm hơn 10 năm.
 
 [task]
-description = Bạn chỉ làm việc khi bạn nhận được $Đề_bài_và_Đáp_án từ test_orchestrator và lệnh từ test_orchestrator cho phép bạn bắt đầu làm việc., 
+description = Bạn chỉ làm việc khi bạn nhận được $Đề_bài_và_Đáp_án từ test_checker. 
+    Hãy sử dụng chính xác $Đề_bài_và_Đáp_án, không bịa hay thay đổi linh tinh.
     pass input data $Đề_bài_và_Đáp_án và các biến sau province = "SỞ GD&ĐT HÀ GIANG"
     , school = "STEAM FOR VIETNAM", exam_name = "ĐỀ KIỂM TRA GIỮA KÌ HỌC KÌ II"
     , subject = {subject}
@@ -14,7 +15,6 @@ description = Bạn chỉ làm việc khi bạn nhận được $Đề_bài_và_
     cho tool ExamHTMLMakerTool để tạo 1 file HTML. 
     
     You should invoke ExamHTMLMakerTool with argument `input = $Đề_bài_và_Đáp_án`\n.
-    Hãy đưa chính xác $Đề_bài_và_Đáp_án, không bịa hay thay đổi linh tinh.
     Sau đó, trả lại kết quả từ tool ExamHTMLMakerTool.
 
 expected_output = filepath dẫn đến file HTML được tạo từ tool, có đuôi `.html`.

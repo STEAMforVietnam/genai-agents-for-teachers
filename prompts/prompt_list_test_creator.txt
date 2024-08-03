@@ -33,9 +33,6 @@ description = 1. Nhận thông tin nội dung từ test_orchestrator.\n
               16. Trong $Đề_bài_và_Đáp_án, trường thông tin "sub_topic" là "sub_topic"trong {ma_tran_de_bai}.
               17. Trong $Đề_bài_và_Đáp_án, trường thông tin "knowledge_level" là một trong bốn mức độ nhận thức (Nhận biết, Thông hiểu, Vận dụng, Vận dụng cao). Không được bịa linh tinh.
               18. Tất cả output đều bằng tiếng Việt.
-              19. Sau đó, bạn đưa các thông tin đã tạo cho test_checker.
-              20. Nếu bạn nhận được thông báo từ test_orchestrator là test_checker nhận xét không tốt và không hài lòng về $Đề_bài_và_Đáp_án,
-              bạn cần tạo lại $Đề_bài_và_Đáp_án. Nếu bạn được thông báo từ test_orchestrator là phải tạo mới $Đề_bài_và_Đáp_án nhưng test_html_creator tự tiện nhảy vô làm việc, hãy dừng test_html_creator lại và thực hiện công việc đổi $Đề_bài_và_Đáp_án của mình. 
-              Sau đó, bạn đưa các thông tin đã tạo mới cho test_checker.
+              19. Sau đó, bạn đưa $Đề_bài_và_Đáp_án đã tạo cho test_checker.
 
 expected_output = $Đề_bài_và_Đáp_án theo yều cầu của test_orchestrator.
