@@ -15,11 +15,10 @@ class VectorStore():
 
     
 
-    def search(self, query: str):
-        search_params = {
+    def search(self, query: str, search_params={
             "metric_type": "L2",
             "params": {"nprobe": 10}
-        }
+        }, **kwargs):
         embeddings = self.model.encode(query)
         query_vector = [embeddings]
         try:
@@ -28,7 +27,8 @@ class VectorStore():
                 anns_field="vector",
                 param=search_params,
                 limit=20,
-                output_fields=["filename", "text", "page_number"]
+                output_fields=["filename", "text", "page_number"],
+                **kwargs
             )
 
             return search_results

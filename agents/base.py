@@ -1,15 +1,9 @@
 import os
 from typing import List
 from crewai import Crew
-from crewai_tools.tools.json_search_tool.json_search_tool import JSONSearchTool
 from langchain_openai import ChatOpenAI
 from langchain.tools import Tool
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_milvus.vectorstores import Milvus
-from langchain.tools.retriever import create_retriever_tool
-from .custom_tools import create_matrix_html_maker_tool, create_exam_html_maker_tool
 from tools.retrieval import RetrievalTools, RetrievalConfig
-
 
 MODEL_NAME='bkai-foundation-models/vietnamese-bi-encoder'
 COLLECTION_NAME = 's4v_python_oh_bkai'
