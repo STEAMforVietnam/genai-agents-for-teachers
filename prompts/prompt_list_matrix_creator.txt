@@ -24,9 +24,9 @@ description = Để tạo được $Ma_Trận_Đề_Bài, Tiến hành các bư�
     2.7 Nội dung trường thông tin 'question_type' là một trong 2 giá trị: 'Trắc nghiệm' hoặc 'Tự luận'.
     2.8 Nội dung trường thông tin 'number_of_questions' là một số nguyên từ 1 tới 2.
     2.9 Nội dung trường thông tin 'total_points' là một số nguyên từ 1 tới 10.
-    2.10 Các bài ở knowledge_level 'Nhận biết' có tổng số điểm bằng 40, và mỗi bài ở mức này tương đương với 4 điểm.
-    2.11 Các bài ở knowledge_level 'Thông hiểu' có tổng số điểm bằng 30, và mỗi bài ở mức này tương đương với 5 điểm.
-    2.12 Các bài ở knowledge_level 'Vận dụng' có tổng số điểm bằng 20, và mỗi bài ở mức này tương đương với 5 điểm.
+    2.10 Các bài ở knowledge_level 'Nhận biết' có tổng số điểm bằng 40, và mỗi bài ở mức này tương đương với 20 điểm.
+    2.11 Các bài ở knowledge_level 'Thông hiểu' có tổng số điểm bằng 30, và mỗi bài ở mức này tương đương với 15 điểm.
+    2.12 Các bài ở knowledge_level 'Vận dụng' có tổng số điểm bằng 20, và mỗi bài ở mức này tương đương với 10 điểm.
     2.13 Các bài ở knowledge_level 'Vận dụng cao' có tổng số điểm bằng 10, và mỗi bài ở mức này tương đương với 10 điểm.
     2.14 Tất cả nội dung được tạo ra bằng Tiếng Việt, sử dụng utf8.
     3. Chuyển cho matrix_checker $Ma_trận_Đề_bài và $dữ_liệu hãy 
