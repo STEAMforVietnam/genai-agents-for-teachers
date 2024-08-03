@@ -8,4 +8,4 @@ description = 1. Đầu tiên, Bạn sẽ giao việc tạo $Ma_Trận_Đề_Bà
     3. Sau đó, dựa trên kết quả nhận tại từ matrix_checker, Bạn sẽ dựa trên bản đánh giá và chọn một trong hai quyết định:
     3.1 Nếu đánh giá chưa tốt, Yêu cầu matrix_creator sửa lại $Ma_Trận_Đề_Bài theo gợi ý từ matrix_checker
     3.2 Nếu đánh gía phản hồi tích cực, sẽ nhận định công việc đã hoàn thành và trả lại kết quả cho html_creator
-expected_output = $Ma_Trận_Đề_Bài trả về từ matrix_creator.
+expected_output = your thought process.

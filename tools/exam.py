@@ -16,7 +16,7 @@ class ExamTool:
     
     @tool("Get Appendix Tool")
     def get_appendix(query: str) -> str:
-        """Search Milvus for relevant Chapter information based on a query."""
+        """Search Milvus for relevant Appendix information based on a query."""
         uri = os.getenv("DATABSE_PUBLIC_ENDPOINT")
         token = os.getenv("DATABASE_API_KEY")
         vector_store = VectorStore(uri, token)

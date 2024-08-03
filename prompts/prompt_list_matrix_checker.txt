@@ -13,5 +13,6 @@ description = Kiểm tra và sửa lại cho tôi $Ma_Trận_Đề_Bài đã đ�
         6. 'Tổng số điểm' của các items có 'knowledge_level' là 'Vận dụng cao' sau khi cộng lại phải là 10
         7 Cung cấp phản hồi chi tiết về đề thi và đáp án, bao gồm cả đề xuất cải thiện nếu cần thiết. "
         8. Trả lại đánh giá của bạn cho matrix_orchestrator."
+        9. Chỉnh sừa lại $Ma_Trận_Đề_Bài cho đúng như phản hồi. Không thay đổi tên topic hoặc sub_topic
         9. Nếu không có gì cần phải chỉnh sửa, thì trả lại dữ liệu đầu vào $Ma_Trận_Đề_Bài như ban đầu và đánh gía Tốt cho matrix_orchestrator
 expected_output = một $Ma_Trận_Đề_Bài theo cấu trúc MatrixJSON

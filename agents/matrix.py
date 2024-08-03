@@ -71,7 +71,8 @@ class MatrixCrew(CustomCrew):
             description=(self.creator_prompt.task_description),
             expected_output=self.creator_prompt.task_expected_output,
             agent=matrix_creator,
-            output_json=MatrixJSON,
+            # output_json=MatrixJSON,
+            output_file="./outputs/matrix-tao.md",
             context=[matrix_orchestrator_task]
         )
 
@@ -112,7 +113,6 @@ class MatrixCrew(CustomCrew):
             # TODO: somehow the tool output is not passed back to Agent Output
             # SO expected_output is never met and the agent + the task fall into infinite loop
             expected_output=(self.html_creator_prompt.task_expected_output),
-            # output_file="matrix.html"
             agent=html_creator,
             # context=[matrix_creator_task, matrix_checker_task],
             
@@ -122,7 +122,7 @@ class MatrixCrew(CustomCrew):
         return Crew(
                 agents=[matrix_orchestrator, matrix_creator, matrix_checker, html_creator],
                 tasks=[matrix_orchestrator_task, matrix_creator_task, matrix_checker_task, html_task],
-                # memory=True,
+                memory=True,
                 verbose=2,
                 planning=True
             )
