@@ -105,7 +105,7 @@ class MatrixCrew(CustomCrew):
             llm=self.llm,
             verbose=True, 
             tools=[create_matrix_html_maker_tool],
-            max_iter=1
+            max_iter=5
         )
         
         html_task = Task(

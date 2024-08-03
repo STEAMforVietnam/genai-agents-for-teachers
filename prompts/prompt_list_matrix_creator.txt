@@ -15,7 +15,7 @@ description = Để tạo được $Ma_Trận_Đề_Bài, Tiến hành tuần t�
     "{{'topic': 'CHƯƠNG NĂNG LƯỢNG, CÔNG, CÔNG SUẤT', 'sub_topic': 'Công suất', 'knowledge_level': 'Vận dụng', 'question_type': 'Tự luận', 'number_of_questions': '1', 'total_points': '5'}}
     Lưu ý là bạn chỉ dùng tool này 1 lần duy nhất
     2. $Ma_Trận_Đề_Bài của bạn phải thoả mãn các yêu cầu sau:
-    2.1 $Ma_Trận_Đề_Bài có tối đa là 3 topics
+    2.1 $Ma_Trận_Đề_Bài có tối đa là 3 'topics'. Mỗi 'topic' có tối đa là 3 'sub_topics'. mỗi 'knowledge_level' có tối đa 2 câu hỏi 
     2.2 Không được phép thêm các "Chương" và "Bài học" không có trong $dữ_liệu vào $Ma_Trận_Đề_Bài
     2.3 Nội dung trường thông tin 'knowledge_level' là một trong 4 giá trị: 'Nhận biết', 'Thông hiểu', 'Vận dụng' hoặc 'Vận dụng cao' - thể hiện mức hiểu kiến thức từ thấp tới cao. Dưới đây là các định nghĩa cho từng giá trị:
     2.4.1 Mức độ 'Nhận biết' thường được dùng cho các câu hỏi Trắc nghiệm đơn giản, có 2 câu trả lời ĐÚNG vs. SAI
