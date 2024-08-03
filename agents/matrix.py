@@ -1,9 +1,11 @@
-from crewai import Agent, Crew, Task
+from crewai import Agent, Crew, Task, Process
+from crewai.tasks.conditional_task import ConditionalTask
 from agents.base import CustomCrew
-from agents.models import MatrixJSON
+from agents.models import MatrixJSON, EvaluationJSON
 from agents.custom_tools import create_matrix_html_maker_tool
 from agents.prompt_list import PromptList
 from tools.exam import ExamTool
+from pydantic_core import from_json
 
 class MatrixCrew(CustomCrew):
     """
@@ -19,6 +21,9 @@ class MatrixCrew(CustomCrew):
           creator_prompt, orchestrator_prompt, 
           checker_prompt, html_creator_prompt)
         
+    def is_done(result: EvaluationJSON) -> bool:
+        return True if result.result == "DONE" else False
+    
     def _get_tools(self):
         super()._get_tools()
         self.tools.append(create_matrix_html_maker_tool)
@@ -38,7 +43,7 @@ class MatrixCrew(CustomCrew):
             role=matrix_orchestrator_role,
             goal=(matrix_orchestrator_goal),
             backstory=matrix_orchestrator_backstory,
-            allow_delegation=False,
+            allow_delegation=True,
             llm=self.llm,
             verbose=True,
             max_iter=5
@@ -62,7 +67,7 @@ class MatrixCrew(CustomCrew):
             allow_delegation=False,
             llm=self.llm,
             verbose=True,
-            tools=[ExamTool.get_appendix],
+            # tools=[ExamTool.get_appendix],
             max_iter=5
         )
         
@@ -72,6 +77,8 @@ class MatrixCrew(CustomCrew):
             expected_output=self.creator_prompt.task_expected_output,
             agent=matrix_creator,
             output_json=MatrixJSON,
+            # output_file="./outputs/matrix-creator-output.md",
+            tools=[ExamTool.get_appendix],
             context=[matrix_orchestrator_task]
         )
 
@@ -90,7 +97,7 @@ class MatrixCrew(CustomCrew):
             description=(self.checker_prompt.task_description),
             expected_output=(self.checker_prompt.task_expected_output),
             agent=matrix_checker,
-            # output_json=MatrixJSON,
+            output_json=EvaluationJSON,
             output_file="./outputs/matrix-danh-gia.md",
             context=[matrix_creator_task],
         )
@@ -103,8 +110,8 @@ class MatrixCrew(CustomCrew):
             allow_delegation=False,
             llm=self.llm,
             verbose=True, 
-            tools=[create_matrix_html_maker_tool],
-            max_iter=1
+            # tools=[create_matrix_html_maker_tool],
+            max_iter=5
         )
         
         html_task = Task(
@@ -114,6 +121,7 @@ class MatrixCrew(CustomCrew):
             expected_output=(self.html_creator_prompt.task_expected_output),
             # output_file="matrix.html"
             agent=html_creator,
+            tools=[create_matrix_html_maker_tool]
             # context=[matrix_creator_task, matrix_checker_task],
             
         )
@@ -122,7 +130,27 @@ class MatrixCrew(CustomCrew):
         return Crew(
                 agents=[matrix_orchestrator, matrix_creator, matrix_checker, html_creator],
                 tasks=[matrix_orchestrator_task, matrix_creator_task, matrix_checker_task, html_task],
-                # memory=True,
+                memory=True,
                 verbose=2,
+                # manager_agent=matrix_orchestrator,
+                # process=Process.hierarchical,
                 planning=True
             )
+    
+    def run(self):
+        eval_result = "NOT DONE"
+        result = {
+            "result":"NOT DONE",
+            "evaluation":"Hãy tạo mới một $Ma_Trận_Đề_Bài",
+            "data":[]
+        }
+        for i in range(0, 2):
+            if eval_result == "NOT DONE":
+                if isinstance(result, EvaluationJSON):
+                    result = result.model_dump()
+                print(result)
+                result = super().run(inputs=result)
+
+                eval_result = from_json(result.tasks_output[2].json_dict).get("result")
+                print(eval_result)
+                return result

@@ -5,13 +5,21 @@ backstory = Bạn là một giáo viên dạy Vật Lý ở một trường trun
 
 [task]
 description = Kiểm tra và sửa lại cho tôi $Ma_Trận_Đề_Bài đã được tạo ở matrix_creator_task theo các tiêu chí sau:\n 
-        1. Ma_Trận_Đề_Bài có cấu trúc chính xác như cấu trúc MatrixJSON: \n[{{'topic': '...', 'sub_topic': '...', 'knowledge_level': '...', 'question_type': '...', 'number_of_questions': '...', 'total_points': '...'}}]\n 
+        1. $Ma_Trận_Đề_Bài có cấu trúc chính xác như cấu trúc MatrixJSON: \n[{{'topic': '...', 'sub_topic': '...', 'knowledge_level': '...', 'question_type': '...', 'number_of_questions': '...', 'total_points': '...'}}]\n 
         2. Cả 4 giá trị nhận thức 'Nhận biết', 'Thông hiểu', 'Vận dụng' hoặc 'Vận dụng cao' đều xuất hiện trong Ma_Trận_Đề_Bài 
         3. 'Tổng số điểm' của các items có 'knowledge_level' là 'Nhận biết', sau khi cộng lại phải là 40 
         4. 'Tổng số điểm' của các items có 'knowledge_level' là 'Thông hiểu' sau khi cộng lại phải là 30
         5. 'Tổng số điểm' của các items có 'knowledge_level' là 'Vận dụng' sau khi cộng lại phải là 20
         6. 'Tổng số điểm' của các items có 'knowledge_level' là 'Vận dụng cao' sau khi cộng lại phải là 10
-        7 Cung cấp phản hồi chi tiết về đề thi và đáp án, bao gồm cả đề xuất cải thiện nếu cần thiết. "
-        8. Trả lại đánh giá của bạn cho matrix_orchestrator."
-        9. Nếu không có gì cần phải chỉnh sửa, thì trả lại dữ liệu đầu vào $Ma_Trận_Đề_Bài như ban đầu và đánh gía Tốt cho matrix_orchestrator
-expected_output = một $Ma_Trận_Đề_Bài theo cấu trúc MatrixJSON
+        7 Tạo phản hồi chi tiết về đề thi và đáp án, bao gồm cả đề xuất cải thiện nếu cần thiết. Ghi phản hồi này vào một biến $evaluation
+        7.1. Nếu không có gì cần phải chỉnh sửa, thì trả lại dữ liệu đầu vào $Ma_Trận_Đề_Bài như ban đầu và result = "DONE"
+        7.2. Nếu cần phải chỉnh sửa, thì trả lại dữ liệu đầu vào $Ma_Trận_Đề_Bài như ban đầu và result = "NOT DONE"
+        8. Format kết quả cuả bạn sử dụng pydantic model EvaluationJSON với cái propery: result= "...", "evaluation"= $evaluation, data = $Ma_Trận_Đề_Bài. Dưới đây là một vài ví dụ:
+        ```
+        result="DONE", evaluation= "Tốt và không cần chỉnh sửa gì thêm", data= $Ma_Trận_Đề_Bài
+        ```
+        ```
+        result= "NOT DONE", evaluation= Cần điều chỉnh lại số câu hỏi cho phù hợp,  data= $Ma_Trận_Đề_Bài
+        ```
+
+expected_output = một pydantic model EvaluationJSON

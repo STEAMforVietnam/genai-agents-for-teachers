@@ -1,6 +1,6 @@
 from enum import Enum
 from pydantic import BaseModel
-
+from typing import List, Optional
 
 
 class KnowledgeLevelEnum(Enum):
@@ -17,6 +17,12 @@ class MatrixJSON(BaseModel):
     number_of_questions: int
     total_points: int
 
+class EvaluationJSON(BaseModel):
+    result: str
+    evaluation: str
+    data: List[Optional[MatrixJSON]]
+
+###### MODELS FOR EXAM
 class Question(BaseModel):
     desc: str
     points: float
