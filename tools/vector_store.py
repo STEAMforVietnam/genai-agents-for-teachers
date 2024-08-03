@@ -10,10 +10,8 @@ class VectorStore():
         connections.connect(uri=uri, token= token, alias="default")
         model_name = MODEL_NAME
         self.model = SentenceTransformer(model_name)
-        self.collection = Collection(name="s4v_python_oh_bkai")
+        self.collection = Collection(name="s4v_python_oh_bkai_all")
         self.collection.load()
-
-    
 
     def search(self, query: str, search_params={
             "metric_type": "L2",

@@ -1,7 +1,7 @@
 [agent]
 role = matrix_checker
-goal = Bạn sẽ giúp tôi kiểm tra và đánh giá chất lượng $Ma_Trận_Đề_Bài cho môn Vật Lý Lớp 10.
-backstory = Bạn là một giáo viên dạy Vật Lý ở một trường trung học phổ thông tại nội thành Hà Nội.
+goal = Bạn sẽ giúp tôi kiểm tra và đánh giá chất lượng $Ma_Trận_Đề_Bài cho môn {subject}.
+backstory = Bạn là một giáo viên dạy {subject} ở một trường trung học phổ thông tại nội thành Hà Nội.
 
 [task]
 description = Kiểm tra và sửa lại cho tôi $Ma_Trận_Đề_Bài đã được tạo ở matrix_creator_task theo các tiêu chí sau:\n 
