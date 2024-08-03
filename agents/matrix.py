@@ -3,6 +3,7 @@ from agents.base import CustomCrew
 from agents.models import MatrixJSON
 from agents.custom_tools import create_matrix_html_maker_tool
 from agents.prompt_list import PromptList
+from tools.exam import ExamTool
 
 class MatrixCrew(CustomCrew):
     """
@@ -52,84 +53,65 @@ class MatrixCrew(CustomCrew):
         )
 
         ### Add Matrix Creator Agent (Ngừoi Kiến Tạo), responsible for all "Tạo" task
-        # TODO: change Agent args roal, goal, backstory to take in prompt.txt
-        matrix_creator_role = self.creator_prompt.role
-        matrix_creator_goal = self.creator_prompt.goal
-        matrix_creator_backstory = self.creator_prompt.backstory
-        
+        # TODO: change Agent args roal, goal, backstory to take in prompt.txt        
         matrix_creator = Agent(
-            role=matrix_creator_role,
-            goal=(matrix_creator_goal
+            role=self.creator_prompt.role,
+            goal=(self.creator_prompt.goal
             ),
-            backstory=matrix_creator_backstory,
+            backstory=self.creator_prompt.backstory,
             allow_delegation=False,
             llm=self.llm,
             verbose=True,
-            tools=self.tools,
-            max_iter=1
+            tools=[ExamTool.get_appendix],
+            max_iter=5
         )
         
-        # TODO: change Task args description and expected_output to take in prompt.txt
-        matrix_creator_task_description = self.creator_prompt.task_description
-        matrix_creator_task_expected_output = self.creator_prompt.task_expected_output
-        
+        # TODO: change Task args description and expected_output to take in prompt.txt        
         matrix_creator_task = Task(
-            description=(matrix_creator_task_description),
-            expected_output=matrix_creator_task_expected_output,
+            description=(self.creator_prompt.task_description),
+            expected_output=self.creator_prompt.task_expected_output,
             agent=matrix_creator,
-            output_json=MatrixJSON
-            # context=[orchestrator_task]
+            output_json=MatrixJSON,
+            context=[matrix_orchestrator_task]
         )
 
-        ### Add Matrix Checker Agent (Nguời Kiểm Định), responsible for all "Kiểm Tra Task"
-        matrix_checker_role = self.checker_prompt.role
-        matrix_checker_goal = self.checker_prompt.goal
-        matrix_checker_backstory = self.checker_prompt.backstory
-        
+        ### Add Matrix Checker Agent (Nguời Kiểm Định), responsible for all "Kiểm Tra Task"        
         matrix_checker = Agent(
-            role=matrix_checker_role,
-            goal=matrix_checker_goal,
-            backstory=matrix_checker_backstory,
+            role=self.checker_prompt.role,
+            goal=self.checker_prompt.goal,
+            backstory=self.checker_prompt.backstory,
             allow_delegation=False,
             llm=self.llm,
             verbose=True,
-            # tools=self.tools,
-            max_iter=2
+            max_iter=5
         )
 
-        matrix_checker_task_description = self.checker_prompt.task_description
-        matrix_checker_task_expected_output = self.checker_prompt.task_expected_output
         matrix_checker_task = Task(
-            description=(matrix_checker_task_description),
-            expected_output=(matrix_checker_task_expected_output),
+            description=(self.checker_prompt.task_description),
+            expected_output=(self.checker_prompt.task_expected_output),
             agent=matrix_checker,
             # output_json=MatrixJSON,
-            # output_file="matrix.json",
+            output_file="./outputs/matrix-danh-gia.md",
             context=[matrix_creator_task],
         )
 
         ### ADD HTML Creator Agent (Thiết kế WEB)
-        matrix_html_creator_role = self.html_creator_prompt.role
-        matrix_html_creator_goal = self.html_creator_prompt.goal
-        matrix_html_creator_backstory = self.html_creator_prompt.backstory
         html_creator = Agent(
-            role=matrix_html_creator_role,
-            goal=matrix_html_creator_goal,
-            backstory=matrix_html_creator_backstory,
+            role=self.html_creator_prompt.role,
+            goal=self.html_creator_prompt.goal,
+            backstory=self.html_creator_prompt.backstory,
             allow_delegation=False,
-            llm=self.llm, 
+            llm=self.llm,
             verbose=True, 
             tools=[create_matrix_html_maker_tool],
             max_iter=1
         )
         
-        matrix_html_creator_task_description = self.html_creator_prompt.task_description
-        matrix_html_creator_task_expected_output = self.html_creator_prompt.task_expected_output
         html_task = Task(
-            description=(matrix_html_creator_task_description),
+            description=(self.html_creator_prompt.task_description),
             # TODO: somehow the tool output is not passed back to Agent Output
             # SO expected_output is never met and the agent + the task fall into infinite loop
-            expected_output=(matrix_html_creator_task_expected_output),
+            expected_output=(self.html_creator_prompt.task_expected_output),
             # output_file="matrix.html"
             agent=html_creator,
             # context=[matrix_creator_task, matrix_checker_task],
@@ -140,8 +122,7 @@ class MatrixCrew(CustomCrew):
         return Crew(
                 agents=[matrix_orchestrator, matrix_creator, matrix_checker, html_creator],
                 tasks=[matrix_orchestrator_task, matrix_creator_task, matrix_checker_task, html_task],
-                # manager_agent=orchestrator,
                 # memory=True,
-                # process=Process.hierarchical,
-                verbose=2
+                verbose=2,
+                planning=True
             )
