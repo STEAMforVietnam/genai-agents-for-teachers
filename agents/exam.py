@@ -151,10 +151,10 @@ class ExamCrew(CustomCrew):
             context=[self.orchestrator_task, self.exam_generator_task, self.checker_task]
         )
 
-    def run(self, inputs=None):
+    def run(self, subject: str = "Vật lý"):
         
         with open("./outputs/matrix.json", "r", encoding="utf-8") as file:
             matrix = json.load(file)
-        inputs = {"ma_tran_de_bai": matrix}
+        inputs = {"ma_tran_de_bai": matrix, "subject": subject}
         return super().run(inputs)
         

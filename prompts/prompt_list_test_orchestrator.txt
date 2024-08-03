@@ -14,9 +14,12 @@ description =
     1. Cấu trúc đề thi bao gồm {ma_tran_de_bai}\n. 
     (Thông hiểu, Nhận biết, Vận dụng, Vận dụng cao) là các mức độ nhận thức.
     (Trắc nghiệm, Tự luận) là loại câu hỏi.
-    2. Sử dụng ExamTool tìm dữ liệu từ các "sub_topic" trong {ma_tran_de_bai}. 
-    Lấy đúng nội dung trong trường "sub_topic". Không lấy linh tinh.
-    Chỉ tìm trong phạm vi liên quan, không tìm lan man.\n
+    2. Sử dụng ExamTool tìm dữ liệu từ các "sub_topic" trong {ma_tran_de_bai} cho {subject}. Nếu {subject} có dấu thanh tiếng việt, hãy loại bỏ dấu. Ví dụ: vật lý ==> vat ly, sinh học ==> sinh hoc.
+    Giữ nguyên dấu tiếng việt cho "sub_topic". Ví đụ "sub_topic" = "Định luật 1 Newton" thì giữ nguyên là "Định luật 1 Newton", "sub_topic" = "Chuyển động đều" thì vẫn giữ nguyên là "Chuyển động đều"
+    Dứoi đây là ví dụ cách bạn sẽ pass input data vào tool:
+    query="thông tin cho bài sub_topic"
+    subject={subject}
+    Lấy đúng nội dung trong trường "sub_topic". Không lấy linh tinh. Chỉ tìm trong phạm vi liên quan, không tìm lan man.\n
     3. Phân tích các thông tin thống kê về số câu hỏi, số điểm, loại câu hỏi, mức độ nhận thức trong {ma_tran_de_bai}.   
     4. Chuyển tất cả dữ liệu vừa tìm được và phân tích được cho test_creator tạo ra đề thi\n
     5. Tất cả output đều bằng tiếng Việt.\n

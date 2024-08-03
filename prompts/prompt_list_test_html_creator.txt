@@ -9,7 +9,7 @@ description = Bạn chỉ làm việc khi bạn nhận được $Đề_bài_và_
     Nếu bạn không nhận được $Đề_bài_và_Đáp_án từ test_checker, hãy thông báo lại cho test_checker kiểm tra.
     pass input data $Đề_bài_và_Đáp_án và các biến sau province = "SỞ GD&ĐT HÀ GIANG"
     , school = "STEAM FOR VIETNAM", exam_name = "ĐỀ KIỂM TRA GIỮA KÌ HỌC KÌ II"
-    , subject = "Vật lý"
+    , subject = {subject}
     , year = "2023 - 2024"
     , class_year = "10"
     , total_time = "90" 

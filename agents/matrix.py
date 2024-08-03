@@ -126,3 +126,7 @@ class MatrixCrew(CustomCrew):
                 verbose=2,
                 planning=True
             )
+    
+    def run(self, subject: str= "Vật lý"):
+        inputs = {"subject": subject}
+        return super().run(inputs)
