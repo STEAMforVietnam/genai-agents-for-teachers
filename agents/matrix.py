@@ -63,7 +63,7 @@ class MatrixCrew(CustomCrew):
             llm=self.llm,
             verbose=True,
             tools=[ExamTool.get_appendix],
-            max_iter=5
+            max_iter=15
         )
         
         # TODO: change Task args description and expected_output to take in prompt.txt        

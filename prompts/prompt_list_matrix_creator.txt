@@ -4,7 +4,7 @@ goal = Bạn sẽ giúp tôi tạo $Ma_Trận_Đề_Bài cho học sinh trong m�
 backstory = Bạn là một giáo viên dạy {subject} ở một trường trung học phổ thông tại nội thành Hà Nội.
 
 [task]
-description = Để tạo được $Ma_Trận_Đề_Bài, Tiến hành tuần tự các bước sau:
+description = Để tạo được $Ma_Trận_Đề_Bài, Tiến hành các bước sau:
     Nếu {subject} có dấu thanh tiếng việt, hãy loại bỏ dấu. Ví dụ: vật lý ==> vat ly, sinh học ==> sinh hoc. Lưu ý chỉ áp dụng cho {subject}
     1. Tìm trong Milvus các thông tin liên quan đến Appendix (mục lục) bằng cách pass input query="chương và bài học trích từ trích từ file mục_lục.pdf cho môn học" và subject = {subject}. 
     Lưu các dữ liệu này vào một biến $dữ_liệu
