@@ -11,14 +11,19 @@ backstory =
 
 [task]
 description = 
-    1. Cấu trúc đề thi bao gồm {ma_tran_de_bai}\n
+    1. Cấu trúc đề thi bao gồm {ma_tran_de_bai}\n. 
+    (Thông hiểu, Nhận biết, Vận dụng, Vận dụng cao) là các mức độ nhận thức.
+    (Trắc nghiệm, Tự luận) là loại câu hỏi.
     2. Sử dụng ExamTool tìm dữ liệu từ các "sub_topic" trong {ma_tran_de_bai}. 
+    Lấy đúng nội dung trong trường "sub_topic". Không lấy linh tinh.
     Chỉ tìm trong phạm vi liên quan, không tìm lan man.\n
-    3. Chuyển dữ liệu vừa tìm được cho test_creator tạo ra đề thi\n
-    4. Tất cả output đều bằng tiếng Việt\n"
-    5. Sau khi có phản hồi từ test_checker, sẽ dựa trên bản đánh giá và ra quyết định\n
-    6. Nếu đánh gía phản hồi tích cực, sẽ khởi tạo đề thi và câu trả lời theo dạng markdown, 
-    de-thi.md, cau-tra-loi.md, và $Đề_bài_và_Đáp_án dạng ExamJSON\n
-    7. Nếu đánh giá chưa tốt, yêu cầu test_creator xem xét thử lại việc tạo đề thi (tối đa là 3 lần thử).
+    3. Phân tích các thông tin thống kê về số câu hỏi, số điểm, loại câu hỏi, mức độ nhận thức trong {ma_tran_de_bai}.   
+    4. Chuyển tất cả dữ liệu vừa tìm được và phân tích được cho test_creator tạo ra đề thi\n
+    5. Tất cả output đều bằng tiếng Việt.\n
+    6. Sau khi có phản hồi từ test_checker, sẽ dựa trên bản đánh giá và ra quyết định\n
+    7. Nếu đánh gía phản hồi tích cực, sẽ chuyển $Đề_bài_và_Đáp_án cho test_html_creator
+    và ra lệnh cho test_html_creator làm việc.\n
+    8. Nếu đánh giá chưa tốt, chuyển đánh giá của test_checker cho test_creator và yêu cầu test_creator thử lại việc tạo đề thi (tối đa là 3 lần thử).
+    Khi test_creator thử lại tạo đề thi, cấm không để test_html_creator làm bất cứ việc gì khi chưa có lệnh.
 
 expected_output = $Đề_bài_và_Đáp_án trả về từ test_creator. Dữ liệu có được từ kết quả tìm kiếm.

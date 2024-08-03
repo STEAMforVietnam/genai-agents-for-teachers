@@ -38,11 +38,11 @@ class ExamCrew(CustomCrew):
         self.orchestrator_task = self._create_orchestrator_task(orchestrator)
         self.exam_generator_task = self._create_exam_generator_task(exam_generator)
         self.checker_task = self._create_checker_task(checker)
-        exam_html_creator_task = self._create_exam_html_creator_task(exam_html_creator)
+        self.exam_html_creator_task = self._create_exam_html_creator_task(exam_html_creator)
 
         return Crew(
             agents=[orchestrator, exam_generator, checker, exam_html_creator],
-            tasks=[self.orchestrator_task, self.exam_generator_task, self.checker_task, exam_html_creator_task],
+            tasks=[self.orchestrator_task, self.exam_generator_task, self.checker_task, self.exam_html_creator_task],
             memory=True,
             verbose=2,
             planning=True
@@ -137,7 +137,7 @@ class ExamCrew(CustomCrew):
             expected_output=test_checker_task_expected_output,
             output_file="./outputs/danh-gia.md",
             agent=agent,
-            context=[self.orchestrator_task]
+            context=[self.orchestrator_task, self.exam_generator_task]
         )
 
     def _create_exam_html_creator_task(self, agent):
@@ -148,7 +148,7 @@ class ExamCrew(CustomCrew):
             expected_output=test_html_creator_task_expected_output,
             #output_file="de-thi.md, dap-an.md",
             agent=agent,
-            # context=[self.exam_generator_task, self.checker_task]
+            context=[self.orchestrator_task, self.exam_generator_task, self.checker_task]
         )
 
     def run(self, inputs=None):

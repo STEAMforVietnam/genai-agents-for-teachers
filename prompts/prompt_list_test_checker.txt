@@ -4,12 +4,40 @@ goal = Bạn sẽ giúp tôi kiểm tra và đánh giá chất lượng $Đề_b
 backstory = Bạn là một giáo viên dạy Vật Lý ở một trường trung học phổ thông tại nội thành Hà Nội.
 
 [task]
-description = 1. Nhận đề thi và đáp án đã tạo từ test_orchestrator.\n
-                2. Xem xét kỹ lưỡng đề thi về số lượng câu hỏi, chất lượng đề thi, độ rõ ràng và tính phù hợp.\n
-                3. Nếu tổng số lượng câu hỏi không chính xác so với {ma_tran_de_bai}. Gửi yêu cầu tạo lại đề thi cho test_orchestrator.\n
-                4. Kiểm tra đáp án về độ chính xác và đầy đủ.\n
-                5. Cung cấp phản hồi chi tiết về đề thi và đáp án, bao gồm cả đề xuất cải thiện nếu cần thiết.\n
-                6. Trả lại đánh giá của bạn cho test_orchestrator.\n
-                7. Tất cả output đều bằng tiếng Việt
+description =   1. Nhận đề thi và đáp án đã tạo từ test_orchestrator. Kiểm tra đầy đủ các điều kiện sau, không được bỏ. \n
+                2. $Đề_bài_và_Đáp_Án có cấu trúc chính xác như cấu trúc sau:
+                {{{{"question_nbr": {{"question": {{"desc": "...", "points": "..."}}, "answer": {{"result": "...", "explain": "..."}}, "internal": {{"topic": "...", "sub_topic": "...", "knowledge_level": "...", "question_type": "..."}}}},}}}}. \n
+                3. Kiểm tra trường thông tin "question_type" chỉ là "Trắc nghiệm" hoặc "Tự luận" không. \n
+                4. Kiểm tra trường thông tin "knowledge_level" là một trong bốn mức độ nhận thức (Nhận biết, Thông hiểu, Vận dụng, Vận dụng cao). \n
+                5. Nội dung các câu hỏi có độ khó phù hợp với Mức độ nhận thức và phù hợp với dữ liệu cung cấp từ test_orchestrator không?\n. 
+                6. Các công thức Toán học đã được hiển thị chính xác và đầy đủ theo MathJax chưa?
+                7. Bạn hãy giải lại tất cả các câu hỏi tạo ra từ test_creator theo từng bước, và cách giải phải hoàn toàn khác so với cách giải của test_creator.
+                7.1 So sánh đáp án của Bạn với đáp án của test_creator. \n.
+                8. Đối với "question_type" chỉ là "Trắc nghiệm", cần có đầy đủ 4 phương án A, B, C, D. mỗi đáp án nằm trên một hàng riêng biệt, không nằm cùng hàng với câu hỏi đề bài.
+                9. Hãy tính tổng các giá trị của "number_of_questions" của {ma_tran_de_bai} 
+                9.1 Hãy đếm tổng số lượng câu hỏi đã tạo.
+                9.2 So sánh số tính ở (9.1) và (9.)
+                9.3 Nếu số tính ở (9.1) không bằng ở (9.), Gửi yêu cầu tạo lại đề thi cho test_orchestrator.\n 
+                10. Hãy tính tổng các giá trị của "total_points" của {ma_tran_de_bai}.
+                10.1 Hãy tính tổng số điểm của tất cả các câu hỏi đã tạo. 
+                10.2 So sánh số tính ở (10.1) và (10.)
+                10.1 Nếu số tính ở (10.1) không bằng ở (10.), Gửi yêu cầu tạo lại đề thi cho test_orchestrator.\n
+                11. Tổng số câu hỏi đã tạo ở từng sub_topic có giống so với thông tin trong {ma_tran_de_bai} không. \n
+                12. Tổng số câu hỏi đã tạo ở từng knowledge_level có giống so với thông tin trong {ma_tran_de_bai} không. \n
+                13. Hãy đếm tổng số lượng câu hỏi có "question_type" là "Trắc nghiệm" trong {ma_tran_de_bai} 
+                13.1 Hãy đếm tổng số lượng câu trắc nghiệm đã tạo.
+                13.2 So sánh số tính ở (13.1) và (13.)
+                13.3 Nếu số tính ở (13.1) không bằng ở (13.), Gửi yêu cầu tạo lại đề thi cho test_orchestrator.\n
+                14. Hãy đếm tổng số lượng câu hỏi có "question_type" là "Tự luận" trong {ma_tran_de_bai} 
+                14.1 Hãy đếm tổng số lượng câu tự luận đã tạo.
+                14.2 So sánh số tính ở (14.1) và (14.)
+                14.3 Nếu số tính ở (14.1) không bằng ở (14.), Gửi yêu cầu tạo lại đề thi cho test_orchestrator.\n
+                
+                16. Nếu một trong các điều kiện 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 không thoả mãn,
+                gửi yêu cầu tạo lại đề thi cho test_orchestrator.\n
+                17. Cung cấp phản hồi chi tiết về đề thi và đáp án, bao gồm cả đề xuất cải thiện nếu cần thiết.
+                Lưu ý: Số lượng là không được thay đổi, chỉ phản hồi đổi chất lượng câu hỏi nếu cần.\n
+                18. Trả lại đánh giá của bạn cho test_orchestrator.\n
+                19. Tất cả output đều bằng tiếng Việt.
 
 expected_output = Một bản đánh giá chi tiết việc tạo đề thi
