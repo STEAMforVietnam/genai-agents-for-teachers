@@ -21,10 +21,6 @@ class CustomCrew:
         self.mon_hoc: str = mon_hoc
         self.file_path: str = "."
         self.tools: List[Tool] = []
-        self.llm = ChatOpenAI(
-            model = "gpt-4o-mini",
-            temperature = 0.5
-        )
         self.creator_prompt = creator_prompt
         self.checker_prompt = checker_prompt
         self.html_creator_prompt = html_creator_prompt

@@ -58,7 +58,7 @@ class ExamCrew(CustomCrew):
             backstory=test_orchestrator_backstory,
             verbose=True,
             allow_delegation=False,
-            llm=self.llm,
+            # llm=self.llm,
             max_iter=5
         )
 
@@ -72,7 +72,7 @@ class ExamCrew(CustomCrew):
             backstory=test_creator_backstory,
             verbose=True,
             allow_delegation=False,
-            llm=self.llm,
+            # llm=self.llm,
             max_iter=10
         )
 
@@ -86,7 +86,7 @@ class ExamCrew(CustomCrew):
             backstory=test_checker_backstory,
             verbose=True,
             allow_delegation=False,
-            llm=self.llm,
+            # llm=self.llm,
             max_iter=5
         )
 
@@ -101,8 +101,8 @@ class ExamCrew(CustomCrew):
             verbose=True,
             allow_delegation=False,
             tools=[create_exam_html_maker_tool],
-            llm=self.llm,
-            max_iter=2
+            # llm=self.llm,
+            max_iter=5
         )
 
     def _create_orchestrator_task(self, agent):
@@ -126,7 +126,7 @@ class ExamCrew(CustomCrew):
             output_json=ExamJSON,
             agent=agent,
             #tools=[ExamTool.get_chapter],
-            context=[self.orchestrator_task]
+            # context=[self.orchestrator_task]
         )
 
     def _create_checker_task(self, agent):
@@ -137,7 +137,7 @@ class ExamCrew(CustomCrew):
             expected_output=test_checker_task_expected_output,
             output_file="./outputs/danh-gia.md",
             agent=agent,
-            context=[self.orchestrator_task, self.exam_generator_task]
+            # context=[self.exam_generator_task]
         )
 
     def _create_exam_html_creator_task(self, agent):
@@ -147,8 +147,7 @@ class ExamCrew(CustomCrew):
             description=(test_html_creator_task_description),
             expected_output=test_html_creator_task_expected_output,
             #output_file="de-thi.md, dap-an.md",
-            agent=agent,
-            context=[self.orchestrator_task, self.exam_generator_task, self.checker_task]
+            agent=agent
         )
 
     def run(self, subject: str = "Vật lý"):

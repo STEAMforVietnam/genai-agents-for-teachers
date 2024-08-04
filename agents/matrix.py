@@ -39,7 +39,7 @@ class MatrixCrew(CustomCrew):
             goal=(matrix_orchestrator_goal),
             backstory=matrix_orchestrator_backstory,
             allow_delegation=False,
-            llm=self.llm,
+            # llm=self.llm,
             verbose=True,
             max_iter=5
         )
@@ -60,7 +60,7 @@ class MatrixCrew(CustomCrew):
             ),
             backstory=self.creator_prompt.backstory,
             allow_delegation=False,
-            llm=self.llm,
+            #llm=self.llm,
             verbose=True,
             tools=[ExamTool.get_appendix],
             max_iter=15
@@ -82,7 +82,7 @@ class MatrixCrew(CustomCrew):
             goal=self.checker_prompt.goal,
             backstory=self.checker_prompt.backstory,
             allow_delegation=False,
-            llm=self.llm,
+            # llm=self.llm,
             verbose=True,
             max_iter=5
         )
@@ -102,7 +102,7 @@ class MatrixCrew(CustomCrew):
             goal=self.html_creator_prompt.goal,
             backstory=self.html_creator_prompt.backstory,
             allow_delegation=False,
-            llm=self.llm,
+            # llm=self.llm,
             verbose=True, 
             tools=[create_matrix_html_maker_tool],
             max_iter=5
