@@ -24,7 +24,7 @@ class VectorStore():
                 data=query_vector,
                 anns_field="vector",
                 param=search_params,
-                limit=10,
+                limit=5,
                 output_fields=["filename", "text", "page_number"],
                 **kwargs
             )
