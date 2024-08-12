@@ -27,12 +27,14 @@ description = 1. Nhận thông tin $ma_tran_de_bai = {ma_tran_de_bai} nội dung
               11. Đưa các bước đã thực hiện để đi đến đáp án đúng của từng câu hỏi vào trường thông tin "explain". 
               Gộp tất cả các bước của đáp án vào trong trường thông tin “explain". \n
               12. Đưa đáp án đúng vào trường thông tin "result".
-              13. Tất cả các công thức Toán học cần được chuyển sang định dạng MathJax chuẩn xác và đầy đủ. Nội dung đề bài bằng Tiếng Viêt, sử dụng utf8.
+              13. Tất cả các công thức Toán học cần được chuyển sang định dạng MathJax chuẩn xác và đầy đủ.
+              Các công thức Toán học cần ở trong \( \). Ví dụ \(x^2 \). 
+              Nội dung đề bài bằng Tiếng Viêt, sử dụng utf8.
               14. Trong $Đề_bài_và_Đáp_án, trường thông tin "question_type" chỉ là "Trắc nghiệm" hoặc "Tự luận".
               15. Trong $Đề_bài_và_Đáp_án, trường thông tin "topic" là "topic" trong $ma_tran_de_bai.
               16. Trong $Đề_bài_và_Đáp_án, trường thông tin "sub_topic" là "sub_topic"trong $ma_tran_de_bai.
               17. Trong $Đề_bài_và_Đáp_án, trường thông tin "knowledge_level" là một trong bốn mức độ nhận thức (Nhận biết, Thông hiểu, Vận dụng, Vận dụng cao). Không được bịa linh tinh.
-              18. Tất cả output đều bằng tiếng Việt.
+              18. Tất cả output đều bằng tiếng Việt, sử dụng utf8.
               19. Sau đó, bạn đưa $Đề_bài_và_Đáp_án đã tạo cho test_checker.
 
 expected_output = $Đề_bài_và_Đáp_án theo yều cầu của test_orchestrator.

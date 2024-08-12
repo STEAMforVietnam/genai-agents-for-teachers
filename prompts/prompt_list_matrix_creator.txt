@@ -8,14 +8,14 @@ description = Để tạo được $Ma_Trận_Đề_Bài, Tiến hành các bư�
     Nếu {subject} có dấu thanh tiếng việt, hãy loại bỏ dấu. Ví dụ: vật lý ==> vat ly, sinh học ==> sinh hoc. Lưu ý chỉ áp dụng cho {subject}
     1. Tìm trong Milvus các thông tin liên quan đến Appendix (mục lục) bằng cách pass input query="chương và bài học trích từ trích từ file mục_lục.pdf cho môn học" và subject = {subject}. 
     Lưu các dữ liệu này vào một biến $dữ_liệu
-    Sau đó, Dùng các $dữ_liệu về "Bài học" và "Chương" lấy được để lập các Ma_Trận_Đề_Bài Kiểm tra theo một cấu trúc MatrixJSON như sau:
-    [{{'topic': '...', 'sub_topic': '...', 'knowledge_level': '...', 'question_type': '...', 'number_of_questions': '...', 'total_points': '...'}}]
+    Sau đó, Dùng các $dữ_liệu về "Bài học" và "Chương" lấy được để lập $Ma_Trận_Đề_Bài theo một cấu trúc MatrixJSON như sau:
+    [{{'topic': '...', 'sub_topic': '...', 'knowledge_level': '...', 'question_type': '...', 'number_of_questions': '...', 'total_points': '...'}}]. Không bịa linh tinh các keys không có trong MatrixJSON. 
     Dưới đây là vài ví dụ:
     "{{'topic': 'CHƯƠNG ĐỘNG HỌC', 'sub_topic': 'Tốc độ và vận tốc', 'knowledge_level': 'Nhận biết', 'question_type': 'Trắc nghiệm', 'number_of_questions': '3', 'total_points': '12'}}
     "{{'topic': 'CHƯƠNG NĂNG LƯỢNG, CÔNG, CÔNG SUẤT', 'sub_topic': 'Công suất', 'knowledge_level': 'Vận dụng', 'question_type': 'Tự luận', 'number_of_questions': '1', 'total_points': '5'}}
     Lưu ý là bạn chỉ dùng tool này 1 lần duy nhất
     2. $Ma_Trận_Đề_Bài của bạn phải thoả mãn các yêu cầu sau:
-    2.1 $Ma_Trận_Đề_Bài có tối đa là 3 'topics'. Mỗi 'topic' có tối đa là 3 'sub_topics'. mỗi 'knowledge_level' có tối đa 2 câu hỏi 
+    2.1 $Ma_Trận_Đề_Bài có tối đa là 2 'topics'. Mỗi 'topic' có tối đa là 2 'sub_topics'. mỗi 'knowledge_level' có tối đa 2 câu hỏi 
     2.2 Không được phép thêm các "Chương" và "Bài học" không có trong $dữ_liệu vào $Ma_Trận_Đề_Bài
     2.3 Nội dung trường thông tin 'knowledge_level' là một trong 4 giá trị: 'Nhận biết', 'Thông hiểu', 'Vận dụng' hoặc 'Vận dụng cao' - thể hiện mức hiểu kiến thức từ thấp tới cao. Dưới đây là các định nghĩa cho từng giá trị:
     2.4.1 Mức độ 'Nhận biết' thường được dùng cho các câu hỏi Trắc nghiệm đơn giản, có 2 câu trả lời ĐÚNG vs. SAI
@@ -29,5 +29,5 @@ description = Để tạo được $Ma_Trận_Đề_Bài, Tiến hành các bư�
     2.12 Các bài ở knowledge_level 'Vận dụng' có tổng số điểm bằng 20, và mỗi bài ở mức này tương đương với 10 điểm.
     2.13 Các bài ở knowledge_level 'Vận dụng cao' có tổng số điểm bằng 10, và mỗi bài ở mức này tương đương với 10 điểm.
     2.14 Tất cả nội dung được tạo ra bằng Tiếng Việt, sử dụng utf8.
-    3. Chuyển cho matrix_checker $Ma_trận_Đề_bài và $dữ_liệu hãy 
+    3. Chuyển cho matrix_checker $Ma_trận_Đề_bài và $dữ_liệu.
 expected_output = Một $Ma_Trận_Đề_Bài theo cấu trúc JSON nêu trên và $dữ_liệu

@@ -93,7 +93,7 @@ class MatrixCrew(CustomCrew):
             agent=matrix_checker,
             # output_json=MatrixJSON,
             output_file="./outputs/matrix-danh-gia.md",
-            context=[matrix_creator_task],
+            context=[matrix_orchestrator_task, matrix_creator_task],
         )
 
         ### ADD HTML Creator Agent (Thiết kế WEB)
@@ -114,7 +114,7 @@ class MatrixCrew(CustomCrew):
             # SO expected_output is never met and the agent + the task fall into infinite loop
             expected_output=(self.html_creator_prompt.task_expected_output),
             agent=html_creator,
-            # context=[matrix_creator_task, matrix_checker_task],
+            context=[matrix_orchestrator_task, matrix_creator_task, matrix_checker_task],
             
         )
 
@@ -123,7 +123,7 @@ class MatrixCrew(CustomCrew):
                 agents=[matrix_orchestrator, matrix_creator, matrix_checker, html_creator],
                 tasks=[matrix_orchestrator_task, matrix_creator_task, matrix_checker_task, html_task],
                 memory=True,
-                verbose=2,
+                verbose=1,
                 planning=True
             )
     

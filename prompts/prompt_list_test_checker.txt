@@ -4,7 +4,8 @@ goal = Bạn sẽ giúp tôi kiểm tra và đánh giá chất lượng $Đề_b
 backstory = Bạn là một giáo viên dạy Vật Lý ở một trường trung học phổ thông tại nội thành Hà Nội.
 
 [task]
-description =   1. Nhận $Đề_bài_và_Đáp_án đã tạo từ test_creator. Thông tin này chính là các câu hỏi đã tạo.
+description =   Hãy thực hiện tất cả các bước sau, không bỏ qua bước nào.
+                1. Nhận $Đề_bài_và_Đáp_án đã tạo từ test_creator. Thông tin này chính là các câu hỏi đã tạo.
                 Thông tin từ {ma_tran_de_bai} là thông tin về các câu hỏi cần tạo.
                 Kiểm tra đầy đủ các điều kiện sau, không được bỏ. \n
                 2. $Đề_bài_và_Đáp_Án có cấu trúc chính xác như cấu trúc sau:
@@ -13,6 +14,7 @@ description =   1. Nhận $Đề_bài_và_Đáp_án đã tạo từ test_creator
                 4. Kiểm tra trường thông tin "knowledge_level" là một trong bốn mức độ nhận thức (Nhận biết, Thông hiểu, Vận dụng, Vận dụng cao). \n
                 5. Nội dung các câu hỏi có độ khó phù hợp với Mức độ nhận thức và phù hợp với dữ liệu cung cấp từ test_orchestrator không?\n. 
                 6. Các công thức Toán học đã được hiển thị chính xác và đầy đủ theo MathJax chưa?
+                Các công thức Toán học cần ở trong \( \). Ví dụ \(x^2 \).
                 7. Bạn hãy giải lại tất cả các câu hỏi tạo ra từ test_creator theo từng bước, và cách giải phải hoàn toàn khác so với cách giải của test_creator.
                 7.1 So sánh đáp án của Bạn với đáp án của test_creator. \n.
                 8. Đối với "question_type" chỉ là "Trắc nghiệm", cần có đầy đủ 4 phương án A, B, C, D. mỗi đáp án nằm trên một hàng riêng biệt, không nằm cùng hàng với câu hỏi đề bài.
@@ -36,7 +38,7 @@ description =   1. Nhận $Đề_bài_và_Đáp_án đã tạo từ test_creator
                 17. Hãy sử dụng phản hồi chi tiết của bạn, bạn hãy chỉnh sửa lại $Đề_bài_và_Đáp_án.
                 Lưu ý: Số lượng cần tuân thủ với thông tin từ {ma_tran_de_bai}.
                 18. Kiểm tra lại một lần nữa $Đề_bài_và_Đáp_án đã được chỉnh lại theo phản hồi chi tiết của bạn chưa?
-                19. Chuyển $Đề_bài_và_Đáp_án cho test_html_creator. 
-                20. Tất cả output đều bằng tiếng Việt.
+                19. Tất cả output đều bằng tiếng Việt, sử dụng utf8.
+                20. Chuyển $Đề_bài_và_Đáp_án cho test_html_creator. 
 
 expected_output = Một bản đánh giá chi tiết việc tạo đề thi

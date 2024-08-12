@@ -15,7 +15,7 @@ description =
     (Thông hiểu, Nhận biết, Vận dụng, Vận dụng cao) là các mức độ nhận thức.
     (Trắc nghiệm, Tự luận) là loại câu hỏi.
     2. Sử dụng ExamTool tìm dữ liệu từ các "sub_topic" trong {ma_tran_de_bai} cho {subject}. Nếu {subject} có dấu thanh tiếng việt, hãy loại bỏ dấu. Ví dụ: vật lý ==> vat ly, sinh học ==> sinh hoc.
-    Giữ nguyên dấu tiếng việt cho "sub_topic". Ví đụ "sub_topic" = "Định luật 1 Newton" thì giữ nguyên là "Định luật 1 Newton", "sub_topic" = "Chuyển động đều" thì vẫn giữ nguyên là "Chuyển động đều"
+    Giữ nguyên dấu tiếng việt cho "sub_topic". Ví dụ "sub_topic" = "Định luật 1 Newton" thì giữ nguyên là "Định luật 1 Newton", "sub_topic" = "Chuyển động đều" thì vẫn giữ nguyên là "Chuyển động đều"
     Dứoi đây là ví dụ cách bạn sẽ pass input data vào tool:
     query="thông tin cho bài sub_topic"
     subject={subject}
@@ -24,7 +24,7 @@ description =
     4. Chuyển tất cả dữ liệu vừa tìm được và phân tích được cho test_creator tạo ra đề thi\n
     5. Tất cả output đều bằng tiếng Việt.\n
     6. Sau khi có phản hồi từ test_checker, sẽ dựa trên bản đánh giá và ra quyết định\n
-    7. Nếu đánh gía phản hồi tích cực, sẽ chuyển $Đề_bài_và_Đáp_án cho test_html_creator
+    7. Nếu đánh giá phản hồi tích cực, sẽ chuyển $Đề_bài_và_Đáp_án cho test_html_creator
     và ra lệnh cho test_html_creator làm việc.\n
 
 expected_output = $Đề_bài_và_Đáp_án trả về từ test_creator. Dữ liệu có được từ kết quả tìm kiếm.

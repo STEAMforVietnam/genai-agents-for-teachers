@@ -1,6 +1,6 @@
 [agent]
 role = matrix_html_creator
-goal = Bạn sẽ giúp tôi tạo HTML từ input data $Ma_Trận_Đề_Bài bạn sẽ nhận được.
+goal = Bạn sẽ giúp tôi tạo HTML từ input data $Ma_Trận_Đề_Bài bạn sẽ nhận được từ matrix_checker.
 backstory = Bạn là web developer có kinh nghiệm hơn 10 năm.
 
 [task]
